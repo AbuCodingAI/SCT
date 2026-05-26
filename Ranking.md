@@ -1,4 +1,4 @@
-## SCT 120 Rankings
+## SCT 125 Rankings
 
 *125 languages ranked by SCT score (lowest = easiest to learn) — Abu Shariff, 2026*
 
@@ -61,7 +61,7 @@
 | 51 | C++ | 78 | 32 | 40.4 | 55 |  | **44.8** |  |
 | 52 | Zig | 80 | 35 | 38.3 | 60 |  | **44.8** |  |
 | 53 | Modula-2 | 35 | 65 | 47.8 | 38 |  | **44.9** | Pascal successor by Wirth |
-| 54 | Z# (AstroSam) | 28 | 72 | 45.4 | 45 |  | **45.3** | no docs, crashes without warning |
+| 54 | Z# (AstroSam) | 28 | 72 | 45.4 | 44.7 |  | **45.2** | complex WD 40+20i — compiler crashes unpredictably, no docs |
 | 55 | D | 60 | 45 | 47.0 | 45 |  | **46.4** |  |
 | 56 | Solidity | 30 | 65 | 49.4 | 40 |  | **46.6** |  |
 | 57 | Zsh | 20 | 65 | 51.9 | 35 |  | **46.8** |  |

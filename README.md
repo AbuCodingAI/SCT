@@ -245,3 +245,119 @@ SCT provides a lightweight, geometrically grounded framework for comparing progr
 *Abu Shariff, age 12. BASIS Chandler. 2026.*
 *Contact: abu.shariffaiml@gmail.com*
 *Language family referenced: AC/AI/AC+ — github.com/AbuCodingAI*
+
+---
+
+## 9. General SCT (GSCT)
+
+### 9.1 Overview
+
+SCT was developed using programming languages as its domain, but the underlying framework is domain-agnostic. Any system where:
+
+- Two natural "anchor" extremes exist
+- A measurable amount of expert-level effort is pushed onto the user
+
+...can be rated with General SCT (GSCT). The formula is identical:
+
+$$GSCT = 0.7(E) + 0.3(|WD|)$$
+
+The only thing that changes between domains is how E and WD are *interpreted*.
+
+### 9.2 Defining E and WD for Any Domain
+
+For any domain, ask two questions:
+
+**For E:**
+> What are the two most "natural" or "intuitive" poles of this domain? Things close to either pole have low E. Things equidistant from both — belonging fully to neither — have high E.
+
+**For WD:**
+> Who does the expert-level work — the system/institution, or the user/participant? When the system absorbs complexity, WD is low. When the user must supply skilled judgment the system doesn't handle, WD is high. Complex WD applies when both sides are simultaneously doing heavy work on the same input.
+
+**For Barrier Tax:**
+> Does accessing or using this thing require unusual cost, equipment, or prerequisite that a typical person wouldn't have? If yes, +20.
+
+### 9.3 Domain Examples
+
+#### Programming Languages *(original domain)*
+| Axis | Pole |
+|---|---|
+| E anchor 1 | Machine code / ASM |
+| E anchor 2 | Natural human language |
+| WD = 0 | Compiler handles everything |
+| WD = 100 | Programmer handles everything (ASM) |
+
+---
+
+#### Colleges & Universities
+| Axis | Pole |
+|---|---|
+| E anchor 1 | Pure vocational / trade school |
+| E anchor 2 | Pure theoretical / research institution |
+| WD = 0 | Fully structured — institution tells you exactly what to do |
+| WD = 100 | Fully self-directed — student designs everything |
+
+A purely vocational school (electrician training) sits on one axis — low E. A pure research university like Caltech sits on the other — also low E. A school that's neither structured nor research-focused, offering vague interdisciplinary programs with no clear outcome, drifts toward the diagonal — high E.
+
+Barrier tax applies if tuition exceeds what a typical family can access without significant debt restructuring.
+
+---
+
+#### Workplaces
+| Axis | Pole |
+|---|---|
+| E anchor 1 | Fully automated / process-driven |
+| E anchor 2 | Fully human / purely creative |
+| WD = 0 | Systems handle all complex judgment calls |
+| WD = 100 | Employee supplies all expert judgment with no tooling support |
+
+A factory assembly line sits near the automated pole — low E, low WD. A freelance artist studio sits near the human/creative pole — low E, high WD. A workplace that's neither automated nor creatively free — bureaucratic, manual, and arbitrary — drifts toward the diagonal.
+
+Complex WD applies when both the employee AND the organization's systems are simultaneously doing redundant heavy work on the same problem — classic over-engineered enterprise software environments.
+
+---
+
+#### Milk Types
+| Axis | Pole |
+|---|---|
+| E anchor 1 | Pure water (zero fat, zero processing) |
+| E anchor 2 | Pure cream (maximum fat, minimum processing) |
+| WD = 0 | Requires no preparation — drink directly |
+| WD = 100 | Requires significant preparation before consumption |
+
+Whole milk sits near the cream axis — low E. Skim milk sits near the water axis — low E. A heavily processed oat milk analog with 47 ingredients sits near the diagonal — high E, and arguably moderate WD since the consumer still has to figure out what it actually is.
+
+Barrier tax applies if refrigeration or special storage is required that a typical household wouldn't have.
+
+---
+
+#### Water Sources
+| Axis | Pole |
+|---|---|
+| E anchor 1 | Pure H2O (distilled, zero minerals) |
+| E anchor 2 | Natural spring water (mineral-rich, unprocessed) |
+| WD = 0 | Ready to drink with no effort |
+| WD = 100 | Requires significant treatment before safe consumption |
+
+Tap water sits near the pure H2O axis in most developed cities — low E, low WD. Natural spring water sits near the other axis — low E, low WD. Brackish water that's neither pure nor mineral-rich in any useful way sits near the diagonal — high E. Floodwater has high WD (must be treated) and moderate E.
+
+---
+
+### 9.4 The Universal Barrier Tax
+
+Across all domains, the barrier tax rule generalizes as:
+
+> If accessing or meaningfully using this thing requires resources, tools, credentials, or prerequisites that a typical person in the relevant population would not have by default, WD += 20.
+
+"Typical person in the relevant population" is intentionally context-dependent — a barrier tax for professional compilers differs from one for consumer milk.
+
+### 9.5 GSCT is a Framework, Not a Fixed Scale
+
+The key insight of GSCT is that **E and WD are always relative to domain-defined anchors.** The math never changes. What changes is what you're measuring distance *from*.
+
+This means GSCT scores are only comparable *within* a domain, not across domains. A college with GSCT=40 cannot be directly compared to a programming language with SCT=40 — the anchors are different. But two colleges can be meaningfully compared against each other, and two languages can be meaningfully compared against each other.
+
+Future work should establish canonical anchor definitions for common domains to enable consistent cross-researcher scoring.
+
+---
+
+*GSCT extension authored alongside SCT v1.0, May 2026.*

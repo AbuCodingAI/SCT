@@ -49,6 +49,7 @@ This formula has an elegant property: **languages on the diagonal y=x have E equ
 | Malbolge at (100, 100) | 100 | Maximum esotericosity |
 
 ### 2.3 Example Coordinates
+<img width="982" height="833" alt="Screenshot from 2026-05-25 16-08-56" src="https://github.com/user-attachments/assets/d2c0d4f2-4193-43eb-b959-2aa16f9341d7" />
 
 *[Figure 1: Esotericosity plane]*
 
@@ -102,6 +103,7 @@ This models practical learnability — a language requiring paid software or spe
 - COBOL → +0 (freely available)
 
 ### 3.4 Complex WD
+<img width="723" height="777" alt="Screenshot from 2026-05-25 16-27-30" src="https://github.com/user-attachments/assets/87373e0e-41e2-4160-9a9b-64624c5e899a" />
 
 *[Figure 2: Complex WD plane]*
 

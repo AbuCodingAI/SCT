@@ -276,7 +276,7 @@ This is geometrically meaningful: pathological languages *leave the normal abstr
 $$\boxed{SCT = 0.7(E) + 0.3(|WD|)}$$
 
 Where:
-- E is computed as min(x, y) from the esotericosity plane
+- E is computed as 100(1 - sqrt(x^2+y^2)/141.4) — distance from origin, inverted
 - $|WD|$ = WD for real-valued cases, $\sqrt{a^2+b^2}$ for complex cases
 - The 0.7/0.3 weighting reflects that syntactic alienness (E) is the dominant driver of learnability difficulty, while labor distribution (WD) is a significant but secondary factor
 - SCT may exceed 100 for pathological languages — this is intentional and meaningful
@@ -286,20 +286,26 @@ Where:
 
 ## 6. Summary Table — Revised
 
-| Language | E | \|WD\| | SCT |
-|---|---|---|---|
-| Python | 32.6 | 10 | **25.8** |
-| COBOL | 34.6 | 20 | **30.2** |
-| ASM | 31.6 | 100 | **52.1** |
-| Go | 41.2 | 25 | **36.3** |
-| Java | 47.5 | 30 | **42.3** |
-| C | 42.9 | 45 | **43.5** |
-| Rust | 40.3 | 55 | **44.7** |
-| C++ | 40.4 | 55 | **44.8** |
-| MATLAB | 52.3 | 55 | **53.1** |
-| Lambda Calculus | 93.4 | 70 | **86.4** |
-| INTERCAL | 63.7 | 84.9 | **70.1** |
-| Malbolge | 97.0 | 120.4 | **104.0** |
+| Language | E | \|WD\| | BT | SCT |
+|---|---|---|---|---|
+| JaSQL | 36.3 | 12 | 0 | **29.0** |
+| Python | 32.6 | 10 | 0 | **25.8** |
+| COBOL | 34.6 | 20 | 0 | **30.2** |
+| AC | 38.3 | 20 | 0 | **32.8** |
+| AI | 41.1 | 16 | 0 | **33.6** |
+| AC* | 41.6 | 18 | 0 | **34.5** |
+| AC+ | 33.7 | 38 | 0 | **35.0** |
+| Go | 41.2 | 25 | 0 | **36.3** |
+| Java | 47.5 | 30 | 0 | **42.3** |
+| ASM | 31.6 | 100 | 0 | **52.1** |
+| C | 42.9 | 45 | 0 | **43.5** |
+| Rust | 40.3 | 55 | 0 | **44.7** |
+| C++ | 40.4 | 55 | 0 | **44.8** |
+| MATLAB | 52.3 | 35 | 6 | **47.1** |
+| INTERCAL | 63.7 | 84.9 | 0 | **70.0** |
+| Whitespace | 99.0 | 141.4 | 0 | **111.7** |
+| Malbolge | 98.4 | 120.4 | 0 | **105.0** |
+| Lambda Calculus | 100.0 | 141.4 | 6 | **118.4** |
 
 
 ## 7. Limitations and Future Work
@@ -709,3 +715,105 @@ The master equation with fractional planes is therefore not just a complexity me
 ---
 
 *Section 11 authored May 2026. Fractional plane extension introduced as the final generalization of the SCT framework.*
+
+---
+
+## 2.6 The Four Corners — Undefined Limits of the Esotericosity Plane
+
+The esotericosity plane has four corners. All four are undefined, excluded, or self-contradictory. Every real rateable language lives strictly inside the plane, never touching any corner. The corners are the theoretical scaffolding the model hangs on — not things that can be rated.
+
+### Corner 1 — (0, 0) — Lambda Calculus
+
+The origin. E = 100 by the formula — maximum esotericosity. But Lambda Calculus cannot be rated ON the scale because it defines WHERE the scale begins. It is the anchor of the void. Rating it on E is like measuring a ruler with itself.
+
+Lambda Calculus predates computers entirely — Alonzo Church formulated it in the 1930s as pure mathematics, not as a programming language. It has zero machine concepts (X=0) and zero conventional readable syntax (Y=0). It is not near the void. It IS the void.
+
+*Preposterous: OriginCannotRateItself*
+
+### Corner 2 — (100, 100) — The Contradictory Language
+
+A language simultaneously maximally close to machine semantics AND maximally close to human readable syntax. This is a logical contradiction. The two axes pull in fundamentally opposite directions — being fully machine-like requires sacrificing human readability, and being fully human-readable requires sacrificing machine directness. No language can maximize both simultaneously. The coordinate exists mathematically but describes something that cannot exist in reality.
+
+This is not a perfect language. It is an impossible language. A hole in the plane where a language cannot be.
+
+*Preposterous: ContradictoryLanguage — cannot be maximally machine AND maximally human*
+
+### Corner 3 — (100, 0) — Pure Binary
+
+Maximum machine semantics, zero human readable syntax. Raw binary. Not excluded because it is hard — excluded because it is not a human-writable language. No human writes programs in raw binary. It is what languages compile TO, not what humans write. Including it as a rateable language would distort the entire scale.
+
+*Excluded: NotHumanWritable*
+
+### Corner 4 — (0, 100) — Pure English
+
+Maximum human readable syntax, zero machine semantics. Natural language. Excluded for the same reason as binary — no programming language actually reaches this. Python at Y=95 is the practical ceiling. Pure English is not a programming language; it is what programming languages approximate.
+
+*Excluded: NotALanguage*
+
+---
+
+## 2.7 The WD Holes
+
+The WD plane has two holes — one at each extreme.
+
+### WD Hole 1 — (0, 0) — NoCode
+
+Programmer does zero work. Compiler does zero work. The computer receives nothing, finds no instructions, and refuses to proceed. This is not a perfect language — it is the complete absence of a language. No code was written. No code was compiled. The computer turned on and nobody came.
+
+*Preposterous: NoCode — the computer turned on and nobody came*
+
+### WD Hole 2 — (100, 100) — The Diagonal Ceiling
+
+The maximum possible complex WD. Both programmer labor and compiler suffering hit their respective ceilings simultaneously. By the 45-45-90 triangle:
+
+$$1 : 1 : \sqrt{2}$$
+$$100 : 100 : 100\sqrt{2}$$
+
+$$|WD|_{max} = 100\sqrt{2} \approx 141.4$$
+
+With barrier tax:
+
+$$|WD|_{max+BT} = 100\sqrt{2} + 20 \approx 161.4$$
+
+Only Lambda Calculus reaches this ceiling — and it does so by definition, not by accident.
+
+---
+
+## 2.8 The SCT Ceiling — 118.4
+
+The theoretical maximum SCT score is:
+
+$$SCT_{max} = 0.7(100) + 0.3(100\sqrt{2} + 20) = 70 + 48.4 = \mathbf{118.4}$$
+
+This ceiling is reached by exactly one thing: **Lambda Calculus in its pure untyped form.**
+
+Lambda Calculus achieves the ceiling across every component simultaneously:
+
+| Component | Value | Reason |
+|---|---|---|
+| E | 100 | Sits at origin (0,0) — maximum esotericosity |
+| a (programmer labor) | 100 | Must build logic, numbers, booleans from scratch — exceeds ASM |
+| b (compiler suffering) | 100 | Reduction engine faces the halting problem — some reductions never terminate |
+| \|WD\| | 100√2 ≈ 141.4 | Diagonal of the entire complex WD plane |
+| Barrier tax | +20 | Requires custom keyboard or input method to type λ, AND demands mathematical prerequisites — formal logic, Church encoding theory, and beta reduction — that no other language in the rankings requires as a condition of entry. The barrier tax reflects both physical inaccessibility (the λ character) and theoretical inaccessibility (the mathematical prerequisites). |
+| \|WD\| + BT | 161.4 | Maximum possible |
+| **SCT** | **118.4** | **The ceiling** |
+
+$$SCT_{Lambda} = 0.7(100) + 0.3(161.4) = 70 + 48.4 = \mathbf{118.4}$$
+
+Lambda Calculus does not merely reach the ceiling. It defines the ceiling by existing. The ceiling is 118.4 because Lambda Calculus exists. Lambda Calculus scores 118.4 because it defines the ceiling. This self-reference is appropriate — Lambda Calculus is the foundation of all formal logic, including the logic used to derive its own score.
+
+**Malbolge vs Lambda Calculus:**
+
+| | Malbolge | Lambda Calculus |
+|---|---|---|
+| SCT | 104.0 | **118.4** |
+| Hard because | Designed to be impossible | Exists outside computing entirely |
+| Barrier | None | Custom keyboard required |
+| WD | Complex, high | Maxed on both axes |
+
+Malbolge is hard by design. Lambda Calculus is hard by existence. The 14.4 point gap between them is the cost of predating computers entirely.
+
+---
+
+*Sections 2.6–2.8 authored May 2026. The four corners, WD holes, and SCT ceiling formally defined.*

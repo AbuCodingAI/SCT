@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCT / GSCT Calculator — Abu Shariff, 2026</title>
+<meta name="description" content="Interactive calculator for the Shariff Complexity Theorem — rate programming languages, colleges, or anything using SCT and GSCT.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Fraunces:ital,wght@0,300;0,600;0,900;1,300&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0f;--surface:#12121a;--surface2:#1a1a26;--border:#2a2a3e;
+  --accent:#7c6dfa;--accent2:#fa6d8a;--accent3:#6dfabc;
+  --text:#e8e6f0;--muted:#6b6880;
+  --mono:'DM Mono',monospace;--serif:'Fraunces',serif;
+}
+html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:var(--mono)}
+.hero{padding:2.5rem 2rem 1.5rem;border-bottom:1px solid var(--border);background:linear-gradient(180deg,#0f0f1a 0%,var(--bg) 100%)}
+.hero h1{font-family:var(--serif);font-size:2.4rem;font-weight:900;letter-spacing:-0.02em;line-height:1.1;margin-bottom:0.4rem}
+.hero h1 span{color:var(--accent)}
+.hero p{color:var(--muted);font-size:0.78rem;letter-spacing:0.05em}
+.hero-links{margin-top:0.8rem;display:flex;gap:1rem;flex-wrap:wrap}
+.hero-links a{font-size:0.7rem;color:var(--accent);text-decoration:none;letter-spacing:0.05em;border-bottom:1px solid var(--accent)44;padding-bottom:1px}
+.hero-links a:hover{border-color:var(--accent)}
+.tabs{display:flex;border-bottom:1px solid var(--border);background:var(--surface);overflow-x:auto}
+.tab{padding:0.8rem 1.4rem;font-family:var(--mono);font-size:0.75rem;letter-spacing:0.08em;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;background:none;border-top:none;border-left:none;border-right:none;white-space:nowrap}
+.tab:hover{color:var(--text)}.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.panel{display:none;padding:1.5rem 2rem;max-width:1100px}.panel.active{display:block}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+@media(max-width:700px){.grid2{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.2rem}
+.card-title{font-size:0.65rem;letter-spacing:0.12em;color:var(--muted);margin-bottom:0.8rem;text-transform:uppercase}
+label{font-size:0.72rem;color:var(--muted);display:block;margin-bottom:0.3rem;margin-top:0.8rem}
+label:first-of-type{margin-top:0}
+input[type=range]{width:100%;accent-color:var(--accent);margin:0.2rem 0;cursor:pointer}
+input[type=number],input[type=text],select{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:var(--mono);font-size:0.8rem;padding:0.5rem 0.7rem;outline:none;transition:border-color 0.2s}
+input[type=number]:focus,input[type=text]:focus,select:focus{border-color:var(--accent)}
+select option{background:var(--surface2)}
+.val-display{font-size:1.4rem;font-weight:500;font-family:var(--serif);color:var(--accent)}
+.val-small{font-size:0.75rem;color:var(--muted);margin-top:0.2rem}
+.score-big{font-family:var(--serif);font-size:3.5rem;font-weight:900;line-height:1;letter-spacing:-0.03em}
+.score-label{font-size:0.65rem;letter-spacing:0.12em;color:var(--muted);text-transform:uppercase;margin-bottom:0.3rem}
+.badge{display:inline-block;padding:0.2rem 0.6rem;border-radius:99px;font-size:0.65rem;letter-spacing:0.08em;font-weight:500}
+.badge-easy{background:#1a3a2a;color:var(--accent3)}
+.badge-mid{background:#2a2a1a;color:#fadb6d}
+.badge-hard{background:#3a1a2a;color:var(--accent2)}
+.badge-extreme{background:#3a1a1a;color:#fa6d6d}
+canvas{width:100%;border-radius:8px;background:var(--surface2);display:block}
+.breakdown-row{display:flex;justify-content:space-between;align-items:center;padding:0.5rem 0;border-bottom:1px solid var(--border);font-size:0.78rem}
+.breakdown-row:last-child{border-bottom:none}
+.breakdown-key{color:var(--muted)}.breakdown-val{color:var(--text);font-weight:500}
+.dim-block{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:1rem;margin-bottom:0.8rem}
+.dim-score{font-size:1rem;font-weight:500;color:var(--accent);font-family:var(--serif)}
+.add-btn{width:100%;background:none;border:1px dashed var(--border);border-radius:8px;color:var(--muted);font-family:var(--mono);font-size:0.75rem;padding:0.8rem;cursor:pointer;transition:all 0.2s;letter-spacing:0.05em}
+.add-btn:hover{border-color:var(--accent);color:var(--accent)}
+.remove-btn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.9rem;padding:0 0.3rem;transition:color 0.2s}
+.remove-btn:hover{color:var(--accent2)}
+.formula-box{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:1rem;font-size:0.8rem;line-height:1.8;color:var(--muted);margin-top:1rem}
+.formula-box span{color:var(--accent)}
+.ref-row{display:flex;justify-content:space-between;align-items:center;padding:0.5rem 0.8rem;border-radius:6px;font-size:0.75rem;margin-bottom:0.3rem;transition:background 0.15s}
+.ref-row:hover{background:var(--surface2)}
+.ref-score{font-family:var(--serif);font-weight:600}
+.progress-bar{width:100%;height:4px;background:var(--border);border-radius:99px;overflow:hidden;margin-top:0.4rem}
+.progress-fill{height:100%;border-radius:99px;transition:width 0.4s}
+.complex-toggle{display:flex;align-items:center;gap:0.5rem;margin-top:0.5rem;cursor:pointer}
+.toggle{width:32px;height:18px;background:var(--border);border-radius:99px;cursor:pointer;position:relative;transition:background 0.2s;flex-shrink:0}
+.toggle.on{background:var(--accent)}
+.toggle::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;background:white;border-radius:50%;transition:left 0.2s}
+.toggle.on::after{left:16px}
+.toggle-label{font-size:0.72rem;color:var(--muted)}
+.tab-content-header{margin-bottom:1.5rem}
+.tab-content-header h2{font-family:var(--serif);font-size:1.4rem;font-weight:600;margin-bottom:0.3rem}
+.tab-content-header p{font-size:0.72rem;color:var(--muted)}
+.gap{gap:1rem;display:flex;flex-direction:column}
+.explainer{background:var(--surface2);border-left:2px solid var(--accent);border-radius:0 8px 8px 0;padding:0.8rem 1rem;font-size:0.75rem;color:var(--muted);line-height:1.7;margin-bottom:1rem}
+.explainer strong{color:var(--text)}
+.corner-box{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:0.8rem;font-size:0.72rem;color:var(--muted);line-height:1.6;margin-bottom:0.5rem}
+.corner-box .corner-title{color:var(--accent2);font-weight:500;margin-bottom:0.3rem;font-size:0.7rem}
+footer{border-top:1px solid var(--border);padding:1.5rem 2rem;color:var(--muted);font-size:0.7rem;letter-spacing:0.05em;margin-top:2rem}
+footer a{color:var(--accent);text-decoration:none}
+</style>
+</head>
+<body>
+<div class="hero">
+  <h1>SCT <span>/</span> GSCT <span>Calculator</span></h1>
+  <p>SHARIFF COMPLEXITY THEOREM — ABU SHARIFF, AGE 12 — 2026 — SCT CEILING: 118.4 — WHITESPACE = LAMBDA CALCULUS WITHOUT BARRIER TAX</p>
+  <div class="hero-links">
+    <a href="https://github.com/AbuCodingAI/SCT" target="_blank">↗ Technical Paper</a>
+    <a href="https://github.com/AbuCodingAI/aclang" target="_blank">↗ AC Language</a>
+    <a href="https://github.com/AbuCodingAI/JaSQL" target="_blank">↗ JaSQL</a>
+    <a href="https://hifiintec.com" target="_blank">↗ hifiintec.com</a>
+  </div>
+</div>
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('basic',this)">SCT — Languages</button>
+  <button class="tab" onclick="switchTab('gsct',this)">GSCT — Any Domain</button>
+  <button class="tab" onclick="switchTab('multi',this)">Multi-Dimensional</button>
+  <button class="tab" onclick="switchTab('ref',this)">SCT 120 Rankings</button>
+  <button class="tab" onclick="switchTab('corners',this)">The Four Corners</button>
+  <button class="tab" onclick="switchTab('about',this)">About SCT</button>
+</div>
+
+<!-- BASIC SCT -->
+<div class="panel active" id="panel-basic">
+  <div class="tab-content-header">
+    <h2>Rate a Programming Language</h2>
+    <p>New model: X = ASM-likeness, Y = conventional readable syntax. E = 100(1 - √(x²+y²)/141.4). Barrier tax = flat +6 to SCT.</p>
+  </div>
+  <div class="explainer">
+    <strong>X axis — ASM/machine-like:</strong> pointers, manual memory, register operators, hardware access. ASM ≈ 95. <strong>Y axis — conventional readable syntax:</strong> familiar keywords, readable structure. Python ≈ 95. <strong>Origin (0,0) = the void</strong> — Lambda Calculus. Maximum E=100. <strong>E = 100(1 - √(x²+y²)/141.4)</strong> — distance from origin, inverted.
+  </div>
+  <div class="grid2">
+    <div class="gap">
+      <div class="card">
+        <div class="card-title">Esotericosity Plane — E = 100(1 - √(x²+y²) / 141.4)</div>
+        <label>X — ASM/machine-like (0=void, 95=ASM, 100=pure binary excluded)</label>
+        <input type="range" min="0" max="100" value="8" id="ex" oninput="updateBasic()">
+        <div style="display:flex;justify-content:space-between;font-size:0.65rem;color:var(--muted);margin-bottom:0.5rem"><span>0 — void</span><span id="ex-val" style="color:var(--text)">8</span><span>100 — binary</span></div>
+        <label>Y — conventional readable syntax (0=void, 95=Python, 100=theoretical max)</label>
+        <input type="range" min="0" max="100" value="95" id="ey" oninput="updateBasic()">
+        <div style="display:flex;justify-content:space-between;font-size:0.65rem;color:var(--muted);margin-bottom:0.8rem"><span>0 — void</span><span id="ey-val" style="color:var(--text)">95</span><span>100 — pure English</span></div>
+        <div style="padding:0.8rem;background:var(--surface2);border-radius:8px;display:flex;justify-content:space-between;align-items:center">
+          <div><div class="val-small">E = 100(1 - √(x²+y²)/141.4)</div><div class="val-display" id="e-val">32.6</div></div>
+          <div style="font-size:0.7rem;color:var(--muted);text-align:right">coordinates<br><span id="e-coords" style="color:var(--text)">(8, 95)</span></div>
+        </div>
+        <canvas id="e-canvas" height="220" style="margin-top:0.8rem"></canvas>
+      </div>
+      <div class="card">
+        <div class="card-title">Work Distribution</div>
+        <label>WD — compiler-grade labor pushed onto programmer (ASM = 100 by definition)</label>
+        <input type="range" min="0" max="100" value="10" id="wd" oninput="updateBasic()">
+        <div style="display:flex;justify-content:space-between;font-size:0.65rem;color:var(--muted);margin-bottom:0.5rem"><span>0 — compiler does all</span><span id="wd-val" style="color:var(--text)">10</span><span>100 — ASM level</span></div>
+        <div class="complex-toggle" onclick="toggleComplex()">
+          <div class="toggle" id="complex-toggle"></div>
+          <span class="toggle-label">Complex WD — programmer AND compiler suffering simultaneously</span>
+        </div>
+        <div id="complex-fields" style="display:none;margin-top:0.8rem;background:var(--surface2);border-radius:8px;padding:0.8rem">
+          <div style="font-size:0.7rem;color:var(--muted);margin-bottom:0.5rem">WD = a + bi → |WD| = √(a² + b²), max = 100√2 ≈ 141.4</div>
+          <label>a — programmer labor (0–100)</label>
+          <input type="number" id="wd-a" value="90" min="0" max="100" oninput="updateBasic()">
+          <label>b — compiler suffering (0–100)</label>
+          <input type="number" id="wd-b" value="80" min="0" max="100" oninput="updateBasic()">
+          <div style="margin-top:0.5rem;font-size:0.72rem;color:var(--accent)" id="complex-result">|WD| = 120.4</div>
+        </div>
+        <label style="margin-top:0.8rem">Barrier Tax (flat +6 to final SCT)</label>
+        <select id="barrier" onchange="updateBasic()">
+          <option value="0">None (+0) — runs anywhere, free, accessible</option>
+          <option value="6">+6 — paid software, special input, or runs poorly on normal hardware</option>
+        </select>
+        <div style="margin-top:0.5rem;font-size:0.68rem;color:var(--muted)">Preposterous: LanguageExtinct — if required machinery is destroyed and undocumented</div>
+      </div>
+    </div>
+    <div class="gap">
+      <div class="card">
+        <div class="score-label">SCT Score</div>
+        <div class="score-big" id="sct-score" style="color:var(--accent3)">25.8</div>
+        <div style="margin-top:0.5rem" id="sct-badge"><span class="badge badge-easy">LOW</span></div>
+        <div class="progress-bar" style="margin-top:1rem"><div class="progress-fill" id="sct-bar" style="width:21.8%;background:var(--accent3)"></div></div>
+        <div style="display:flex;justify-content:space-between;font-size:0.6rem;color:var(--muted);margin-top:0.3rem"><span>0 (perfect lang)</span><span>59.2 (midpoint)</span><span>118.4 (λ ceiling)</span></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Breakdown</div>
+        <div class="breakdown-row"><span class="breakdown-key">E = 100(1-√(x²+y²)/141.4)</span><span class="breakdown-val" id="br-e-raw">32.6</span></div>
+        <div class="breakdown-row"><span class="breakdown-key">|WD|</span><span class="breakdown-val" id="br-wd-raw">10</span></div>
+        <div class="breakdown-row"><span class="breakdown-key">0.7 × E</span><span class="breakdown-val" id="br-e">22.8</span></div>
+        <div class="breakdown-row"><span class="breakdown-key">0.3 × |WD|</span><span class="breakdown-val" id="br-wd">3.0</span></div>
+        <div class="breakdown-row"><span class="breakdown-key">Barrier tax (flat)</span><span class="breakdown-val" id="br-bt">+0</span></div>
+        <div class="breakdown-row" style="border-bottom:none"><span class="breakdown-key" style="color:var(--text);font-weight:500">SCT</span><span class="breakdown-val" id="br-total" style="color:var(--accent);font-size:1.1rem;font-family:var(--serif)">25.8</span></div>
+      </div>
+      <div class="card">
+        <div class="card-title">3 closest in rankings</div>
+        <div id="compare-ref"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GSCT -->
+<div class="panel" id="panel-gsct">
+  <div class="tab-content-header">
+    <h2>Rate Anything — GSCT</h2>
+    <p>Define your domain anchors. Works on colleges, milk, workplaces, water — anything with two natural extremes.</p>
+  </div>
+  <div class="explainer">
+    <strong>For E:</strong> What are the two most natural poles of this domain? Close to either = low E. Equidistant from both = high E. <strong>For WD:</strong> Who does the expert-level work — the system, or the user? <strong>Barrier tax = flat +6</strong> if not freely, comfortably accessible.
+  </div>
+  <div class="grid2">
+    <div class="gap">
+      <div class="card">
+        <div class="card-title">Domain Setup</div>
+        <label>Domain name</label><input type="text" id="domain-name" value="Colleges" oninput="updateGSCT()">
+        <label>Anchor 1 — X axis</label><input type="text" id="anchor1" value="Pure vocational / trade school" oninput="updateGSCT()">
+        <label>Anchor 2 — Y axis</label><input type="text" id="anchor2" value="Pure theoretical / research institution" oninput="updateGSCT()">
+        <label>Subject being rated</label><input type="text" id="subject" value="MIT" oninput="updateGSCT()">
+      </div>
+      <div class="card">
+        <div class="card-title">Scoring</div>
+        <label>X — closeness to Anchor 1</label>
+        <input type="range" min="0" max="100" value="5" id="gx" oninput="updateGSCT()">
+        <div style="text-align:right;font-size:0.65rem;color:var(--muted);margin-bottom:0.5rem" id="gx-val">5</div>
+        <label>Y — closeness to Anchor 2</label>
+        <input type="range" min="0" max="100" value="95" id="gy" oninput="updateGSCT()">
+        <div style="text-align:right;font-size:0.65rem;color:var(--muted);margin-bottom:0.5rem" id="gy-val">95</div>
+        <label>Work Distribution (WD)</label>
+        <input type="range" min="0" max="100" value="60" id="gwd" oninput="updateGSCT()">
+        <div style="text-align:right;font-size:0.65rem;color:var(--muted);margin-bottom:0.5rem" id="gwd-val">60</div>
+        <label>Barrier Tax</label>
+        <select id="g-barrier" onchange="updateGSCT()">
+          <option value="0">None (+0)</option>
+          <option value="6">+6 — not freely accessible</option>
+        </select>
+      </div>
+    </div>
+    <div class="gap">
+      <div class="card">
+        <div class="score-label">GSCT — <span id="gsct-subject-label">MIT</span></div>
+        <div class="score-big" id="gsct-score" style="color:var(--accent)">21.5</div>
+        <div style="margin-top:0.5rem" id="gsct-badge"><span class="badge badge-easy">LOW</span></div>
+        <div class="progress-bar" style="margin-top:1rem"><div class="progress-fill" id="gsct-bar" style="width:18%;background:var(--accent)"></div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Breakdown</div>
+        <div class="breakdown-row"><span class="breakdown-key">E = 100(1-√(x²+y²)/141.4)</span><span class="breakdown-val" id="g-e">5.0</span></div>
+        <div class="breakdown-row"><span class="breakdown-key">|WD|</span><span class="breakdown-val" id="g-wd-total">60</span></div>
+        <div class="breakdown-row"><span class="breakdown-key">Barrier tax (flat)</span><span class="breakdown-val" id="g-bt">+0</span></div>
+        <div class="breakdown-row" style="border-bottom:none"><span class="breakdown-key" style="color:var(--text)">GSCT</span><span class="breakdown-val" id="g-total" style="color:var(--accent);font-size:1.1rem;font-family:var(--serif)">21.5</span></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Formula</div>
+        <div class="formula-box">
+          GSCT = <span>0.7(E)</span> + <span>0.3(|WD|)</span> + <span>BT</span><br>
+          = <span id="g-formula-e">0.7(5.0)</span> + <span id="g-formula-wd">0.3(60)</span> + <span id="g-formula-bt">0</span><br>
+          = <span id="g-formula-result">3.5 + 18.0 + 0 = 21.5</span>
+        </div>
+      </div>
+      <div class="card" style="background:var(--surface2)">
+        <div class="card-title">Quick presets</div>
+        <div style="display:flex;flex-wrap:wrap;gap:0.4rem">
+          <button onclick="loadPreset('college')" style="background:none;border:1px solid var(--border);color:var(--muted);font-family:var(--mono);font-size:0.65rem;padding:0.3rem 0.6rem;border-radius:4px;cursor:pointer">College</button>
+          <button onclick="loadPreset('milk')" style="background:none;border:1px solid var(--border);color:var(--muted);font-family:var(--mono);font-size:0.65rem;padding:0.3rem 0.6rem;border-radius:4px;cursor:pointer">Milk</button>
+          <button onclick="loadPreset('workplace')" style="background:none;border:1px solid var(--border);color:var(--muted);font-family:var(--mono);font-size:0.65rem;padding:0.3rem 0.6rem;border-radius:4px;cursor:pointer">Workplace</button>
+          <button onclick="loadPreset('water')" style="background:none;border:1px solid var(--border);color:var(--muted);font-family:var(--mono);font-size:0.65rem;padding:0.3rem 0.6rem;border-radius:4px;cursor:pointer">Water</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MULTI-DIMENSIONAL -->
+<div class="panel" id="panel-multi">
+  <div class="tab-content-header">
+    <h2>Multi-Dimensional GSCT</h2>
+    <p>n independent evaluation planes. n can be fractional — set confidence below 1.0 for partially observable dimensions. Master equation: GSCT = Σ dᵢ·wᵢ·Dᵢ</p>
+  </div>
+  <div class="grid2">
+    <div>
+      <div id="dims-container"></div>
+      <button class="add-btn" onclick="addDim()">+ add dimension</button>
+    </div>
+    <div class="gap">
+      <div class="card">
+        <div class="score-label">Master Equation Score</div>
+        <div class="score-big" id="multi-score" style="color:var(--accent2)">—</div>
+        <div style="margin-top:0.4rem;font-size:0.7rem;color:var(--muted)" id="multi-n-display">Add dimensions to begin</div>
+        <div class="progress-bar" style="margin-top:1rem"><div class="progress-fill" id="multi-bar" style="width:0%;background:var(--accent2)"></div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Dimension Breakdown</div>
+        <div id="multi-breakdown"><div style="color:var(--muted);font-size:0.75rem">No dimensions yet.</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Master Equation</div>
+        <div class="formula-box">
+          GSCT = <span>Σ dᵢ · wᵢ · Dᵢ(Eᵢ, |WDᵢ|) + BT</span><br>
+          <span style="color:var(--muted);font-size:0.68rem">dᵢ = confidence · wᵢ = weight · Dᵢ = 0.7(Eᵢ)+0.3(|WDᵢ|)</span><br>
+          <span style="color:var(--muted);font-size:0.68rem">n=0 → Preposterous: NoDimensions</span><br>
+          <span style="color:var(--muted);font-size:0.68rem">Ceiling: 118.4 (Lambda Calculus)</span>
+        </div>
+        <canvas id="multi-canvas" height="160" style="margin-top:1rem"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCT 120 RANKINGS -->
+<div class="panel" id="panel-ref">
+  <div class="tab-content-header">
+    <h2>SCT 120 Rankings</h2>
+    <p>120 languages ranked by SCT. Abu Shariff, 2026. New E formula: 100(1-√(x²+y²)/141.4). Barrier tax = flat +6.</p>
+  </div>
+  <div style="margin-bottom:1rem;display:flex;gap:0.5rem;flex-wrap:wrap">
+    <input type="text" id="search-lang" placeholder="Search languages..." style="max-width:280px" oninput="filterRankings()">
+    <select id="filter-tier" onchange="filterRankings()" style="max-width:200px">
+      <option value="all">All tiers</option>
+      <option value="easy">Easy (0–35)</option>
+      <option value="moderate">Moderate (35–50)</option>
+      <option value="hard">Hard (50–70)</option>
+      <option value="extreme">Extreme (70+)</option>
+    </select>
+  </div>
+  <div class="card" style="overflow-x:auto">
+    <table style="width:100%;border-collapse:collapse;font-size:0.75rem" id="rankings-table">
+      <thead>
+        <tr style="border-bottom:1px solid var(--border)">
+          <th style="text-align:left;padding:0.5rem 0.8rem;color:var(--muted);font-weight:400">Rank</th>
+          <th style="text-align:left;padding:0.5rem 0.8rem;color:var(--muted);font-weight:400">Language</th>
+          <th style="text-align:right;padding:0.5rem 0.8rem;color:var(--muted);font-weight:400">X</th>
+          <th style="text-align:right;padding:0.5rem 0.8rem;color:var(--muted);font-weight:400">Y</th>
+          <th style="text-align:right;padding:0.5rem 0.8rem;color:var(--muted);font-weight:400">E</th>
+          <th style="text-align:right;padding:0.5rem 0.8rem;color:var(--muted);font-weight:400">|WD|</th>
+          <th style="text-align:right;padding:0.5rem 0.8rem;color:var(--muted);font-weight:400">BT</th>
+          <th style="text-align:right;padding:0.5rem 0.8rem;color:var(--muted);font-weight:400">SCT</th>
+          <th style="text-align:left;padding:0.5rem 0.8rem;color:var(--muted);font-weight:400">Notes</th>
+        </tr>
+      </thead>
+      <tbody id="rankings-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- FOUR CORNERS -->
+<div class="panel" id="panel-corners">
+  <div class="tab-content-header">
+    <h2>The Four Corners</h2>
+    <p>All four corners of the esotericosity plane are undefined, excluded, or self-contradictory. The SCT ceiling is 118.4.</p>
+  </div>
+  <div class="grid2">
+    <div class="gap">
+      <div class="corner-box">
+        <div class="corner-title">CORNER (0,0) — Lambda Calculus</div>
+        E = 100. WD maxed at 100√2 + BT+6. SCT = 118.4 — the ceiling.<br>
+        Not rated ON the scale — defines WHERE the scale begins.<br>
+        <em>Preposterous: OriginCannotRateItself</em>
+      </div>
+      <div class="corner-box">
+        <div class="corner-title">CORNER (100,100) — The Contradictory Language</div>
+        Maximally machine-like AND maximally readable simultaneously.<br>
+        Logically impossible — the axes oppose each other by definition.<br>
+        E = 0, WD = 0, SCT = 0. Does not and cannot exist.<br>
+        <em>Preposterous: ContradictoryLanguage</em>
+      </div>
+      <div class="corner-box">
+        <div class="corner-title">CORNER (100,0) — Pure Binary</div>
+        Maximum machine semantics, zero readable syntax.<br>
+        Not a human-writable language — excluded from all ratings.<br>
+        <em>Excluded: NotHumanWritable</em>
+      </div>
+      <div class="corner-box">
+        <div class="corner-title">CORNER (0,100) — Pure English</div>
+        Maximum readable syntax, zero machine semantics.<br>
+        Not a programming language. Python at Y=95 is the practical ceiling.<br>
+        <em>Excluded: NotALanguage</em>
+      </div>
+    </div>
+    <div class="gap">
+      <div class="card">
+        <div class="card-title">SCT Ceiling — 118.4</div>
+        <div class="score-big" style="color:var(--accent2)">118.4</div>
+        <div style="margin-top:0.8rem;font-size:0.75rem;color:var(--muted);line-height:1.8">
+          Achieved by Lambda Calculus simultaneously maxing every component:<br>
+          E = 100 (origin anchor)<br>
+          a = 100 (programmer labor ceiling)<br>
+          b = 100 (compiler suffering ceiling)<br>
+          |WD| = 100√2 ≈ 141.4 (diagonal of complex WD plane)<br>
+          BT = +6 flat (custom keyboard for λ)<br><br>
+          <span style="color:var(--accent)">SCT = 0.7(100) + 0.3(141.4) + 6 = 70 + 42.4 + 6 = 118.4</span><br><br>
+          Nothing can exceed this. Lambda Calculus defines the ceiling by existing.
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">WD Holes</div>
+        <div class="corner-box" style="margin-bottom:0.5rem">
+          <div class="corner-title">WD (0,0) — NoCode</div>
+          Zero programmer work, zero compiler work. Computer turns on, finds nothing, refuses to proceed. Not a perfect language — an absence of language.<br>
+          <em>Preposterous: NoCode</em>
+        </div>
+        <div class="corner-box">
+          <div class="corner-title">WD Ceiling — 100√2 ≈ 141.4</div>
+          45-45-90 triangle: 100:100:100√2. Maximum when a=100 AND b=100 simultaneously. Only Lambda Calculus reaches this.
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Barrier Tax Rules</div>
+        <div class="breakdown-row"><span class="breakdown-key">Free, runs anywhere</span><span class="breakdown-val">BT = 0</span></div>
+        <div class="breakdown-row"><span class="breakdown-key">Paid / special input / runs poorly</span><span class="breakdown-val">BT = +6</span></div>
+        <div class="breakdown-row"><span class="breakdown-key">Machinery exists but barely</span><span class="breakdown-val">BT = +6</span></div>
+        <div class="breakdown-row"><span class="breakdown-key">Machinery extinct, documented</span><span class="breakdown-val">BT = +6 (emulatable)</span></div>
+        <div class="breakdown-row" style="border:none"><span class="breakdown-key">Machinery extinct + undocumented</span><span class="breakdown-val" style="color:var(--accent2)">Preposterous: LanguageExtinct</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div class="panel" id="panel-about">
+  <div class="tab-content-header"><h2>About SCT</h2><p>The Shariff Complexity Theorem — what it is and why it exists.</p></div>
+  <div style="max-width:680px">
+    <div class="card" style="margin-bottom:1rem">
+      <div class="card-title">The Problem</div>
+      <p style="font-size:0.8rem;line-height:1.8;color:var(--muted)">Existing metrics measure code complexity, not language design complexity. SCT fills this gap by rating how hard a language is to learn — separating syntactic alienness (E) from labor distribution (WD).</p>
+    </div>
+    <div class="card" style="margin-bottom:1rem">
+      <div class="card-title">The Formula</div>
+      <div class="formula-box">
+        SCT = <span>0.7(E)</span> + <span>0.3(|WD|)</span> + <span>BT</span><br>
+        E = <span>100(1 - √(x²+y²) / 141.4)</span><br>
+        |WD| = <span>WD</span> (real) or <span>√(a²+b²)</span> (complex, max 100√2)<br>
+        BT = <span>0 or +6</span> (flat, not inside WD)<br>
+        Ceiling = <span>118.4</span> (Lambda Calculus)
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:1rem">
+      <div class="card-title">GSCT Extensions</div>
+      <div class="breakdown-row"><span class="breakdown-key">GSCT</span><span class="breakdown-val" style="font-size:0.72rem">Any domain — redefine E and WD anchors</span></div>
+      <div class="breakdown-row"><span class="breakdown-key">Branched GSCT</span><span class="breakdown-val" style="font-size:0.72rem">Profile-conditional barrier tax</span></div>
+      <div class="breakdown-row"><span class="breakdown-key">Multi-Dimensional</span><span class="breakdown-val" style="font-size:0.72rem">n independent evaluation planes</span></div>
+      <div class="breakdown-row" style="border:none"><span class="breakdown-key">Fractional planes</span><span class="breakdown-val" style="font-size:0.72rem">Confidence d ∈ (0,1] for partial observability</span></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Author</div>
+      <p style="font-size:0.8rem;line-height:1.8;color:var(--muted)">Abu Shariff, age 12. BASIS Chandler, Arizona. 2026.<br>
+      Builder of <a href="https://github.com/AbuCodingAI/aclang" style="color:var(--accent)">AC/AI/AC+</a> (14 compile targets, bare-metal systems language, AIVM) and <a href="https://github.com/AbuCodingAI/JaSQL" style="color:var(--accent)">JaSQL</a> (SCT 29.0, rank 8/120).<br><br>
+      <a href="https://github.com/AbuCodingAI/SCT" style="color:var(--accent)">↗ Full technical paper on GitHub</a></p>
+    </div>
+  </div>
+</div>
+
+<footer>SCT / GSCT — Abu Shariff, 2026 &nbsp;·&nbsp; <a href="https://github.com/AbuCodingAI/SCT">Paper</a> &nbsp;·&nbsp; <a href="https://github.com/AbuCodingAI/aclang">AC</a> &nbsp;·&nbsp; <a href="https://github.com/AbuCodingAI/JaSQL">JaSQL</a> &nbsp;·&nbsp; <a href="https://hifiintec.com">hifiintec.com</a></footer>
+
+<script>
+function E(x,y){return Math.round(1000*(1-Math.sqrt(x*x+y*y)/141.421356))/10}
+function calcSCT(x,y,wd_a,wd_b,bt){
+  const e=E(x,y);
+  const wdMag=wd_b>0?Math.round(10*Math.sqrt(wd_a*wd_a+wd_b*wd_b))/10:wd_a;
+  return{e,wdMag,sct:Math.round(10*(0.7*e+0.3*wdMag+bt))/10};
+}
+function scoreColor(s){
+  if(s<35)return'#6dfabc';
+  if(s<50)return'#fadb6d';
+  if(s<70)return'#7c6dfa';
+  return'#fa6d8a';
+}
+function scoreBadge(s){
+  if(s<35)return'<span class="badge badge-easy">LOW</span>';
+  if(s<50)return'<span class="badge badge-mid">MODERATE</span>';
+  if(s<70)return'<span class="badge badge-hard">HIGH</span>';
+  return'<span class="badge badge-extreme">EXTREME</span>';
+}
+
+// Full 120 language dataset
+const allLangs=[
+  ["Scratch Jr",1,98,2,0,0],["Scratch",3,95,4,0,0],["Python",8,95,10,0,0],
+  ["MakeCode Arcade",5,90,6,0,0],["Grace",8,88,8,0,0],["Logo",5,88,8,0,0],
+  ["Ruby",8,90,12,0,0],["JaSQL",5,90,12,0,0],["COBOL",10,92,20,0,0],
+  ["QBASIC",12,85,14,0,0],["HTML",5,82,8,0,0],["YAML",5,82,8,0,0],
+  ["BASIC",12,85,15,0,0],["AC",15,85,20,0,0],["Crystal",28,80,20,0,0],
+  ["Visual Basic 6",15,82,18,0,0],["XML",5,78,10,0,0],["AC*",10,82,18,0,0],
+  ["SQL",8,80,15,0,0],["VB.NET",20,82,22,0,0],["AC+",60,72,38,0,0],
+  ["Groovy",25,78,20,0,0],["Fish Shell",10,80,18,0,0],["Lua",20,78,18,0,0],
+  ["V language",40,72,22,0,0],["Go",45,70,25,0,0],["Dart",18,78,20,0,0],
+  ["Kotlin",28,75,22,0,0],["JSONiq",8,75,15,0,0],["JavaScript",12,78,22,0,0],
+  ["TypeScript",15,76,20,0,0],["GraphQL",10,75,18,0,0],["C#",35,72,28,0,0],
+  ["Nim",35,70,25,0,0],["CSS",5,70,12,0,0],["MySQL",10,78,18,0,0],
+  ["Tkinter",8,78,28,0,0],["Swift",30,72,28,0,0],["Julia",25,72,25,0,0],
+  ["T-SQL",16,74,26,0,0],["Delphi",32,70,32,0,0],["PL/SQL",18,72,28,0,0],
+  ["Java",30,68,30,0,0],["PowerShell",18,72,30,0,0],["Elm",12,72,30,0,0],
+  ["Modula-2",35,65,38,0,0],["R",15,70,28,0,0],["PHP",15,68,25,0,0],
+  ["C",75,30,45,0,0],["Pascal",30,68,35,0,0],["Rust",68,50,55,0,0],
+  ["C++",78,32,55,0,0],["Zig",80,35,60,0,0],["D",60,45,45,0,0],
+  ["Solidity",30,65,40,0,0],["Zsh",20,65,35,0,0],["Octave",18,65,35,0,0],
+  ["Eiffel",25,65,42,0,0],["Elixir",18,65,40,0,0],["Move",35,60,45,0,0],
+  ["Ada",45,55,50,0,0],["Scala",30,60,45,0,0],["Tcl",15,60,38,0,0],
+  ["WebAssembly",85,20,80,0,0],["Bash",22,60,42,0,0],["Objective-C",50,45,48,0,0],
+  ["LLVM IR",88,15,85,0,0],["Assembly x86",95,18,100,0,0],["NASM",94,20,99,0,0],
+  ["MASM",93,22,98,0,0],["ARM Assembly",93,18,98,0,0],["RISC-V ASM",88,25,88,0,0],
+  ["F#",25,60,50,0,0],["Awk",20,55,40,0,0],["MATLAB",18,65,35,0,6],
+  ["Smalltalk",12,60,45,0,0],["Fortran",40,45,48,0,0],["HolyC",70,60,58,0,6],
+  ["Clojure",12,55,48,0,0],["SystemVerilog",52,40,65,0,0],["Self",10,55,50,0,0],
+  ["Forth",55,30,65,0,0],["Erlang",20,52,55,0,0],["Factor",45,35,58,0,0],
+  ["Verilog",50,38,68,0,0],["Perl",20,55,50,40,0],["OCaml",18,52,60,0,0],
+  ["Racket",12,48,52,0,0],["Standard ML",15,50,62,0,0],["Makefile",30,40,60,0,0],
+  ["VHDL",45,35,72,0,0],["Common Lisp",12,45,55,0,0],["LabVIEW",15,50,45,0,6],
+  ["PostScript",50,20,70,0,0],["Punchcard Binary",100,0,100,0,6],
+  ["Lisp",10,42,58,0,0],["Scheme",10,42,58,0,0],["Haskell",10,48,70,0,0],
+  ["Z# (AstroSam)",28,72,45,0,0],["VC++",80,25,68,30,0],
+  ["Windows Batch",18,42,55,30,0],["Debian Bash",22,60,48,0,0],
+  ["Tcl/Tk ecosystem",10,45,45,0,0],["BCPL",72,28,55,0,0],
+  ["Perl5 regex soup",20,30,50,40,0],["INTERCAL",12,50,75,40,0],
+  ["Sed",25,35,65,30,0],["Chef",5,40,70,20,0],["Prolog",8,35,72,0,0],
+  ["Shakespeare",3,35,72,15,0],["APL",5,5,75,45,6],["Mercury",10,32,75,0,0],
+  ["Befunge",10,15,78,35,0],["Unlambda",5,8,80,50,0],
+  ["Minecraft Redstone",8,12,85,70,6],["Ook!",3,8,85,55,0],
+  ["Whitespace",1,1,100,100,0],["Piet",3,2,82,50,0],
+  ["brain** **ck",5,5,85,60,0],["Enigma ASM",2,8,80,70,6],
+  ["Malbolge",1,2,90,80,0],["Lambda Calculus",0,0,100,100,6],
+  ["ELF wrapper",92,5,95,0,0],["PE wrapper",92,5,95,0,0],
+  ["Mach-O wrapper",92,5,95,0,0],
+];
+
+// Compute and sort
+const ranked=allLangs.map(([name,x,y,a,b,bt])=>{
+  let e,wdMag,sct;
+  if(name==="Lambda Calculus"){
+    e=100;wdMag=Math.round(10*100*Math.sqrt(2))/10;sct=Math.round(10*(0.7*100+0.3*wdMag+6))/10;
+  } else {
+    const r=calcSCT(x,y,a,b,bt);e=r.e;wdMag=r.wdMag;sct=r.sct;
+  }
+  const flags=[];if(bt>0)flags.push(`BT+${bt}`);if(b>0)flags.push('complex WD');
+  return{name,x,y,e,wdMag,bt,sct,flags:flags.join(', ')};
+}).sort((a,b)=>a.sct-b.sct);
+
+function buildRankings(){
+  const tbody=document.getElementById('rankings-body');
+  tbody.innerHTML=ranked.map((r,i)=>`
+    <tr style="border-bottom:1px solid var(--border)14;transition:background 0.15s" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background=''">
+      <td style="padding:0.4rem 0.8rem;color:var(--muted)">${i+1}</td>
+      <td style="padding:0.4rem 0.8rem;color:var(--text);font-weight:500">${r.name}</td>
+      <td style="padding:0.4rem 0.8rem;text-align:right;color:var(--muted)">${r.x}</td>
+      <td style="padding:0.4rem 0.8rem;text-align:right;color:var(--muted)">${r.y}</td>
+      <td style="padding:0.4rem 0.8rem;text-align:right;color:var(--muted)">${r.e}</td>
+      <td style="padding:0.4rem 0.8rem;text-align:right;color:var(--muted)">${r.wdMag}</td>
+      <td style="padding:0.4rem 0.8rem;text-align:right;color:var(--muted)">${r.bt>0?'+'+r.bt:''}</td>
+      <td style="padding:0.4rem 0.8rem;text-align:right;font-family:var(--serif);font-weight:700;color:${scoreColor(r.sct)}">${r.sct}</td>
+      <td style="padding:0.4rem 0.8rem;color:var(--muted);font-size:0.68rem">${r.flags}</td>
+    </tr>`).join('');
+}
+
+function filterRankings(){
+  const q=document.getElementById('search-lang').value.toLowerCase();
+  const tier=document.getElementById('filter-tier').value;
+  const rows=document.querySelectorAll('#rankings-body tr');
+  rows.forEach(row=>{
+    const name=row.cells[1].textContent.toLowerCase();
+    const sct=parseFloat(row.cells[7].textContent);
+    const matchQ=name.includes(q);
+    const matchT=tier==='all'||(tier==='easy'&&sct<35)||(tier==='moderate'&&sct>=35&&sct<50)||(tier==='hard'&&sct>=50&&sct<70)||(tier==='extreme'&&sct>=70);
+    row.style.display=matchQ&&matchT?'':'none';
+  });
+}
+
+const presets={
+  college:{domain:'Colleges',a1:'Pure vocational',a2:'Pure research institution',subj:'MIT',x:5,y:95,wd:60,bt:0},
+  milk:{domain:'Milk Types',a1:'Pure water',a2:'Pure cream',subj:'Whole milk',x:10,y:80,wd:5,bt:0},
+  workplace:{domain:'Workplaces',a1:'Fully automated',a2:'Fully creative/human',subj:'Startup',x:30,y:70,wd:50,bt:0},
+  water:{domain:'Water Sources',a1:'Pure H2O',a2:'Natural spring',subj:'Tap water',x:80,y:20,wd:5,bt:0},
+};
+
+let complexOn=false;
+function toggleComplex(){
+  complexOn=!complexOn;
+  document.getElementById('complex-toggle').classList.toggle('on',complexOn);
+  document.getElementById('complex-fields').style.display=complexOn?'block':'none';
+  updateBasic();
+}
+
+function updateBasic(){
+  const ex=+document.getElementById('ex').value;
+  const ey=+document.getElementById('ey').value;
+  document.getElementById('ex-val').textContent=ex;
+  document.getElementById('ey-val').textContent=ey;
+  document.getElementById('e-coords').textContent=`(${ex}, ${ey})`;
+  const eVal=E(ex,ey);
+  document.getElementById('e-val').textContent=eVal;
+  let WD,wdDisp;
+  if(complexOn){
+    const a=Math.min(+document.getElementById('wd-a').value||0,100);
+    const b=Math.min(+document.getElementById('wd-b').value||0,100);
+    WD=Math.round(10*Math.sqrt(a*a+b*b))/10;
+    document.getElementById('complex-result').textContent=`|WD| = √(${a}² + ${b}²) = ${WD} (max 141.4)`;
+    wdDisp=WD;
+  } else {
+    WD=+document.getElementById('wd').value;
+    document.getElementById('wd-val').textContent=WD;
+    wdDisp=WD;
+  }
+  const BT=+document.getElementById('barrier').value;
+  const sct=Math.round(10*(0.7*eVal+0.3*WD+BT))/10;
+  document.getElementById('sct-score').textContent=sct;
+  document.getElementById('sct-score').style.color=scoreColor(sct);
+  document.getElementById('sct-badge').innerHTML=scoreBadge(sct);
+  document.getElementById('br-e-raw').textContent=eVal;
+  document.getElementById('br-wd-raw').textContent=wdDisp;
+  document.getElementById('br-e').textContent=Math.round(10*0.7*eVal)/10;
+  document.getElementById('br-wd').textContent=Math.round(10*0.3*WD)/10;
+  document.getElementById('br-bt').textContent=BT>0?`+${BT}`:'0';
+  document.getElementById('br-total').textContent=sct;
+  document.getElementById('sct-bar').style.width=Math.min(sct/118.4*100,100)+'%';
+  document.getElementById('sct-bar').style.background=scoreColor(sct);
+  // compare
+  const nearby=[...ranked].sort((a,b)=>Math.abs(a.sct-sct)-Math.abs(b.sct-sct)).slice(0,3);
+  document.getElementById('compare-ref').innerHTML=nearby.map(r=>`
+    <div class="breakdown-row">
+      <span class="breakdown-key">${r.name}</span>
+      <span class="breakdown-val" style="color:${scoreColor(r.sct)}">${r.sct} <span style="color:var(--muted);font-size:0.65rem">(${sct>r.sct?'+':''}${Math.round(10*(sct-r.sct))/10})</span></span>
+    </div>`).join('');
+  drawEPlane(ex,ey);
+}
+
+function drawEPlane(px,py){
+  const canvas=document.getElementById('e-canvas');
+  if(!canvas)return;
+  const dpr=window.devicePixelRatio||1;
+  canvas.width=canvas.offsetWidth*dpr;canvas.height=220*dpr;
+  const ctx=canvas.getContext('2d');ctx.scale(dpr,dpr);
+  const W=canvas.width/dpr,H=canvas.height/dpr;
+  const pad=32,plotW=W-pad*2,plotH=H-pad*2;
+  ctx.fillStyle='#1a1a26';ctx.fillRect(0,0,W,H);
+  // origin circle — the void
+  ctx.strokeStyle='#fa6d8a33';ctx.lineWidth=1;ctx.setLineDash([3,3]);
+  ctx.beginPath();ctx.arc(pad,H-pad,20,0,Math.PI*2);ctx.stroke();
+  ctx.setLineDash([]);
+  // axes
+  ctx.strokeStyle='#3a3a5a';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(pad,H-pad);ctx.lineTo(W-pad,H-pad);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(pad,H-pad);ctx.lineTo(pad,pad);ctx.stroke();
+  // labels
+  ctx.fillStyle='#6b6880';ctx.font='8px DM Mono';ctx.textAlign='left';
+  ctx.fillText('void (0,0)',pad+2,H-pad+11);
+  ctx.fillText('ASM-like →',W-pad-55,H-pad+11);
+  ctx.save();ctx.translate(pad-8,H/2);ctx.rotate(-Math.PI/2);ctx.textAlign='center';
+  ctx.fillText('readable →',0,0);ctx.restore();
+  // reference points
+  const refs=[{x:8,y:95,l:'Python',c:'#6dfabc'},{x:1,y:2,l:'Malbolge',c:'#fa6d8a'},{x:95,y:18,l:'ASM',c:'#7c6dfa'},{x:15,y:85,l:'AC',c:'#fa9d6d'},{x:5,y:90,l:'JaSQL',c:'#6dddfa'}];
+  refs.forEach(r=>{
+    const rx=pad+r.x/100*plotW,ry=H-pad-r.y/100*plotH;
+    ctx.beginPath();ctx.arc(rx,ry,3,0,Math.PI*2);
+    ctx.fillStyle=r.c+'55';ctx.fill();ctx.strokeStyle=r.c;ctx.lineWidth=1;ctx.stroke();
+    ctx.fillStyle=r.c;ctx.font='8px DM Mono';ctx.textAlign='left';
+    ctx.fillText(r.l,rx+5,ry-3);
+  });
+  // user point
+  const ux=pad+px/100*plotW,uy=H-pad-py/100*plotH;
+  const eV=E(px,py);
+  // line to origin showing E relationship
+  ctx.strokeStyle='#7c6dfa33';ctx.lineWidth=1;ctx.setLineDash([2,3]);
+  ctx.beginPath();ctx.moveTo(pad,H-pad);ctx.lineTo(ux,uy);ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.beginPath();ctx.arc(ux,uy,7,0,Math.PI*2);
+  ctx.fillStyle='#7c6dfa44';ctx.fill();ctx.strokeStyle='#7c6dfa';ctx.lineWidth=2;ctx.stroke();
+  ctx.fillStyle='#e8e6f0';ctx.font='bold 9px DM Mono';ctx.textAlign='left';
+  const lx=ux+10>W-70?ux-75:ux+10;
+  ctx.fillText(`(${px},${py})`,lx,uy-5);
+  ctx.fillStyle='#7c6dfa';ctx.fillText(`E=${eV}`,lx,uy+8);
+}
+
+function updateGSCT(){
+  const gx=+document.getElementById('gx').value;
+  const gy=+document.getElementById('gy').value;
+  const gwd=+document.getElementById('gwd').value;
+  const bt=+document.getElementById('g-barrier').value;
+  document.getElementById('gx-val').textContent=gx;
+  document.getElementById('gy-val').textContent=gy;
+  document.getElementById('gwd-val').textContent=gwd;
+  const eV=E(gx,gy);
+  const sct=Math.round(10*(0.7*eV+0.3*gwd+bt))/10;
+  const subj=document.getElementById('subject').value||'Subject';
+  document.getElementById('gsct-subject-label').textContent=subj;
+  document.getElementById('gsct-score').textContent=sct;
+  document.getElementById('gsct-score').style.color=scoreColor(sct);
+  document.getElementById('gsct-badge').innerHTML=scoreBadge(sct);
+  document.getElementById('g-e').textContent=eV;
+  document.getElementById('g-wd-total').textContent=gwd;
+  document.getElementById('g-bt').textContent=bt>0?`+${bt}`:'0';
+  document.getElementById('g-total').textContent=sct;
+  document.getElementById('g-formula-e').textContent=`0.7(${eV})`;
+  document.getElementById('g-formula-wd').textContent=`0.3(${gwd})`;
+  document.getElementById('g-formula-bt').textContent=bt>0?`+${bt}`:'0';
+  document.getElementById('g-formula-result').textContent=`${Math.round(10*0.7*eV)/10} + ${Math.round(10*0.3*gwd)/10} + ${bt} = ${sct}`;
+  document.getElementById('gsct-bar').style.width=Math.min(sct/118.4*100,100)+'%';
+  document.getElementById('gsct-bar').style.background=scoreColor(sct);
+}
+
+function loadPreset(key){
+  const p=presets[key];
+  document.getElementById('domain-name').value=p.domain;
+  document.getElementById('anchor1').value=p.a1;
+  document.getElementById('anchor2').value=p.a2;
+  document.getElementById('subject').value=p.subj;
+  document.getElementById('gx').value=p.x;
+  document.getElementById('gy').value=p.y;
+  document.getElementById('gwd').value=p.wd;
+  document.getElementById('g-barrier').value=p.bt;
+  updateGSCT();
+}
+
+let dims=[],dimId=0;
+function addDim(){
+  const id=dimId++;
+  dims.push({id,name:'Dimension '+(dims.length+1),e:20,wd:30,confidence:1.0,weight:0.5});
+  renderDims();
+}
+function removeDim(id){dims=dims.filter(d=>d.id!==id);renderDims();}
+function renderDims(){
+  const c=document.getElementById('dims-container');
+  if(!dims.length){c.innerHTML='<div style="text-align:center;color:var(--muted);font-size:0.75rem;padding:2rem 0">No dimensions. Add one below.</div>';updateMulti();return;}
+  c.innerHTML=dims.map((d,i)=>`
+    <div class="dim-block">
+      <input type="text" value="${d.name}" style="margin-bottom:0.6rem;font-size:0.8rem" oninput="dims[${i}].name=this.value;updateMulti()">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem">
+        <div><label>E (0–100)</label><input type="number" value="${d.e}" min="0" max="100" oninput="dims[${i}].e=+this.value;updateMulti()"></div>
+        <div><label>|WD| (0–141)</label><input type="number" value="${d.wd}" min="0" max="141" oninput="dims[${i}].wd=+this.value;updateMulti()"></div>
+        <div><label>Weight w</label><input type="number" value="${d.weight}" min="0" max="1" step="0.05" oninput="dims[${i}].weight=+this.value;updateMulti()"></div>
+        <div><label>Confidence d (0–1)</label><input type="number" value="${d.confidence}" min="0.1" max="1" step="0.1" oninput="dims[${i}].confidence=+this.value;updateMulti()"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:0.6rem">
+        <div class="dim-score" id="dim-score-${d.id}">—</div>
+        <button class="remove-btn" onclick="removeDim(${d.id})">✕ remove</button>
+      </div>
+    </div>`).join('');
+  updateMulti();
+}
+function updateMulti(){
+  if(!dims.length){
+    document.getElementById('multi-score').textContent='—';
+    document.getElementById('multi-n-display').textContent='n=0 → Preposterous: NoDimensions';
+    document.getElementById('multi-breakdown').innerHTML='<div style="color:var(--muted);font-size:0.75rem">No dimensions.</div>';
+    document.getElementById('multi-bar').style.width='0%';
+    drawMultiChart([]);return;
+  }
+  let total=0,nEff=0;
+  const rows=dims.map((d,i)=>{
+    const Di=Math.round(10*(0.7*d.e+0.3*d.wd))/10;
+    const contrib=Math.round(1000*d.confidence*d.weight*Di)/1000;
+    total+=contrib;nEff+=d.confidence;
+    const el=document.getElementById('dim-score-'+d.id);
+    if(el)el.textContent=`D${i+1}=${Di} → +${contrib}`;
+    return{name:d.name,Di,contrib,confidence:d.confidence,weight:d.weight};
+  });
+  const score=Math.round(100*total)/100;
+  document.getElementById('multi-score').textContent=score;
+  document.getElementById('multi-score').style.color=scoreColor(score);
+  document.getElementById('multi-n-display').textContent=`n ≈ ${Math.round(100*nEff)/100} effective planes`;
+  document.getElementById('multi-bar').style.width=Math.min(score/118.4*100,100)+'%';
+  document.getElementById('multi-bar').style.background=scoreColor(score);
+  document.getElementById('multi-breakdown').innerHTML=rows.map((r,i)=>`
+    <div class="breakdown-row">
+      <span class="breakdown-key">D${i+1}: ${r.name} <span style="color:${r.confidence<1?'#fadb6d':'var(--muted)'}">d=${r.confidence} w=${r.weight}</span></span>
+      <span class="breakdown-val">${r.Di} → +${r.contrib}</span>
+    </div>`).join('');
+  drawMultiChart(rows);
+}
+function drawMultiChart(rows){
+  const canvas=document.getElementById('multi-canvas');
+  if(!canvas)return;
+  const dpr=window.devicePixelRatio||1;
+  canvas.width=canvas.offsetWidth*dpr;canvas.height=160*dpr;
+  const ctx=canvas.getContext('2d');ctx.scale(dpr,dpr);
+  const W=canvas.width/dpr,H=canvas.height/dpr;
+  ctx.fillStyle='#1a1a26';ctx.fillRect(0,0,W,H);
+  if(!rows.length){ctx.fillStyle='#6b6880';ctx.font='10px DM Mono';ctx.textAlign='center';ctx.fillText('Add dimensions',W/2,H/2);return;}
+  const colors=['#7c6dfa','#fa6d8a','#6dfabc','#fadb6d','#fa9d6d','#6dddfa'];
+  const pad=8,bW=(W-pad*2)/rows.length-6;
+  const maxD=Math.max(...rows.map(r=>r.Di),1);
+  rows.forEach((r,i)=>{
+    const x=pad+i*(bW+6),bh=(r.Di/maxD)*(H-35),y=H-20-bh,col=colors[i%colors.length];
+    ctx.fillStyle=col+'22';ctx.fillRect(x,y,bW,bh);
+    ctx.fillStyle=col+'88';ctx.fillRect(x,y,bW*r.confidence,4);
+    ctx.fillStyle=col;ctx.font='bold 8px DM Mono';ctx.textAlign='center';
+    ctx.fillText(r.Di.toFixed(0),x+bW/2,y-3);
+    ctx.fillStyle='#6b6880';ctx.font='7px DM Mono';
+    const lbl=r.name.length>9?r.name.slice(0,9)+'…':r.name;
+    ctx.fillText(lbl,x+bW/2,H-5);
+  });
+}
+
+function switchTab(t,el){
+  document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(e=>e.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('panel-'+t).classList.add('active');
+  if(t==='basic')setTimeout(()=>drawEPlane(+document.getElementById('ex').value,+document.getElementById('ey').value),50);
+  if(t==='multi')setTimeout(updateMulti,50);
+}
+
+// Init
+buildRankings();
+updateBasic();
+updateGSCT();
+[{name:'Academic',e:5,wd:60,w:0.45,d:1.0},{name:'Financial',e:8,wd:8,w:0.35,d:1.0},{name:'Culture/Fit',e:20,wd:15,w:0.20,d:0.7}].forEach(p=>{
+  const id=dimId++;
+  dims.push({id,name:p.name,e:p.e,wd:p.wd,confidence:p.d,weight:p.w});
+});
+renderDims();
+window.addEventListener('resize',()=>{
+  drawEPlane(+document.getElementById('ex').value,+document.getElementById('ey').value);
+  updateMulti();
+});
+</script>
+</body>
+</html>

@@ -49,7 +49,6 @@ This formula has an elegant property: **languages on the diagonal y=x have E equ
 | Malbolge at (100, 100) | 100 | Maximum esotericosity |
 
 ### 2.3 Example Coordinates
-<img width="982" height="833" alt="Screenshot from 2026-05-25 16-08-56" src="https://github.com/user-attachments/assets/d2c0d4f2-4193-43eb-b959-2aa16f9341d7" />
 
 *[Figure 1: Esotericosity plane]*
 
@@ -103,7 +102,6 @@ This models practical learnability — a language requiring paid software or spe
 - COBOL → +0 (freely available)
 
 ### 3.4 Complex WD
-<img width="723" height="777" alt="Screenshot from 2026-05-25 16-27-30" src="https://github.com/user-attachments/assets/87373e0e-41e2-4160-9a9b-64624c5e899a" />
 
 *[Figure 2: Complex WD plane]*
 
@@ -363,3 +361,131 @@ Future work should establish canonical anchor definitions for common domains to 
 ---
 
 *GSCT extension authored alongside SCT v1.0, May 2026.*
+
+---
+
+## 10. Types of GSCT
+
+GSCT is not a single model but a family of models. As the evaluation problem grows more complex, GSCT extends into more powerful forms. This section catalogs the known types.
+
+### 10.1 Taxonomy Overview
+
+| Type | Formula | When to use |
+|---|---|---|
+| SCT | 0.7(E) + 0.3(\|WD\|) | Single domain, programming languages |
+| GSCT | 0.7(E) + 0.3(\|WD\|) with domain-defined anchors | Any single-plane domain |
+| Branched GSCT | GSCT(subject, P) with profile-conditional barrier tax | Same evaluation, different inputs per evaluator |
+| Multi-Dimensional GSCT | $\sum_{i=1}^{n} w_i \cdot D_i(E_i, \|WD_i\|)$ | Multiple independent planes of evaluation |
+
+---
+
+### 10.2 SCT (Base)
+
+The original model. Two anchors (machine code, human language), one plane, one score. Defined in sections 2–4. All other types are extensions of this.
+
+---
+
+### 10.3 GSCT (Generalized)
+
+SCT applied to any domain by redefining what E and WD measure. The formula is identical — only the anchor definitions change. Defined in section 9.
+
+A college, a milk type, a workplace, a water source — anything with two natural poles and a measurable labor distribution can be rated with GSCT.
+
+---
+
+### 10.4 Branched GSCT
+
+The same GSCT evaluation applied with **profile-conditional barrier tax**. The subject being rated doesn't change — but the evaluator's profile changes which barrier tax applies.
+
+Formally:
+
+$$GSCT(S, P) = 0.7(E_S) + 0.3(|WD_S| + BT(S, P))$$
+
+Where:
+- $S$ = subject being rated (e.g. a college)
+- $P$ = evaluator profile (e.g. merit scholar, need-based, full sticker)
+- $BT(S, P)$ = barrier tax, which varies by profile
+
+**Example — MIT vs Harvard for three student profiles:**
+
+| College | Merit BT | Need BT | Sticker BT | GSCT Merit | GSCT Need | GSCT Sticker | Swing |
+|---|---|---|---|---|---|---|---|
+| MIT | +0 | +0 | +0 | 21.5 | 21.5 | 21.5 | **0** |
+| Harvard | +0 | +0 | +20 | 34.5 | 34.5 | 40.5 | **6** |
+| Carnegie Mellon | +0 | +10 | +20 | 22.4 | 25.4 | 28.4 | **6** |
+
+MIT's swing is zero — its financial aid policy is unconditional, so the barrier tax never applies regardless of profile. Institutions with high swing are less accessible in practice than their academic reputation suggests.
+
+**Key distinction from Multi-Dimensional GSCT:** Branched GSCT is still one plane. It doesn't add new axes of evaluation — it adjusts the existing score based on who is asking.
+
+---
+
+### 10.5 Multi-Dimensional GSCT
+
+The most general form. Instead of one evaluation plane with two anchors, Multi-Dimensional GSCT uses **n independent planes**, each with its own domain-specific E and WD definition. The final score is a weighted sum across all planes.
+
+$$GSCT_{MD} = \sum_{i=1}^{n} w_i \cdot D_i(E_i, |WD_i|) \quad \text{where} \quad \sum_{i=1}^{n} w_i = 1$$
+
+Where each dimension $D_i$ is its own full GSCT evaluation:
+
+$$D_i = 0.7(E_i) + 0.3(|WD_i|)$$
+
+**n can be any positive integer.** 2 planes, 4 planes, 11 planes, 26 planes — the framework imposes no upper bound. In principle, a sufficiently complex subject could be evaluated across as many dimensions as needed, analogous to how Calabi-Yau manifolds in string theory encode extra compactified dimensions beyond the four we perceive — real, measurable, and affecting the outcome, but invisible unless deliberately sought.
+
+**Example — college ranking across 4 planes:**
+
+| Plane | What it measures | Example weight |
+|---|---|---|
+| D1: Academic | Research vs vocational identity, self-direction vs structure | 0.40 |
+| D2: Financial | Accessibility, aid generosity, barrier tax profile | 0.30 |
+| D3: Career | Placement structure vs self-directed job search | 0.20 |
+| D4: Geographic | Urban opportunity access vs campus isolation | 0.10 |
+
+$$GSCT_{MD} = 0.40 \cdot D_1 + 0.30 \cdot D_2 + 0.20 \cdot D_3 + 0.10 \cdot D_4$$
+
+**Resulting ranking (Abu Shariff profile, 2026):**
+
+| College | D1 | D2 | D3 | D4 | GSCT_MD |
+|---|---|---|---|---|---|
+| MIT | 21.5 | 8 | 12 | 9 | **15.9** |
+| Caltech | 23.1 | 8 | 18 | 22 | **18.7** |
+| Carnegie Mellon | 22.4 | 22 | 10 | 16 | **19.1** |
+| Princeton | 23.5 | 10 | 22 | 28 | **20.9** |
+| Harvard | 34.5 | 10 | 15 | 9 | **23.6** |
+| Cornell | 33 | 12 | 14 | 32 | **24.8** |
+| UPenn | 30 | 28 | 11 | 8 | **24.0** |
+| Columbia | 35 | 32 | 14 | 5 | **27.1** |
+| Yale | 40 | 10 | 20 | 24 | **29.2** |
+| Brown | 35.5 | 26 | 28 | 30 | **31.4** |
+
+**Weights are evaluator-defined.** A student prioritizing financial accessibility would increase $w_2$; a student prioritizing career placement would increase $w_3$. The same framework, different weights, produces a legitimately different ranking — and both are correct for their respective evaluator.
+
+This is the fundamental advantage of Multi-Dimensional GSCT over single-axis rankings: it makes the evaluator's priorities explicit and adjustable rather than hidden inside an opaque aggregate score.
+
+**Key distinction from Branched GSCT:** Multi-Dimensional GSCT adds genuinely new axes of evaluation. Branched GSCT is one plane with a conditional input. Multi-Dimensional GSCT is n planes with independent evaluations combined.
+
+---
+
+### 10.6 Combining Types
+
+Branched and Multi-Dimensional GSCT are not mutually exclusive. Each dimension $D_i$ in a Multi-Dimensional evaluation can itself be branched — meaning barrier tax within D2 (financial) varies by student profile while D1 (academic) remains fixed.
+
+This produces the most general form:
+
+$$GSCT_{full}(S, P) = \sum_{i=1}^{n} w_i \cdot D_i(E_i, |WD_i| + BT_i(S, P))$$
+
+Where $BT_i(S, P)$ is a dimension-specific, profile-conditional barrier tax. Most dimensions will have $BT_i = 0$ — barrier tax is primarily a financial and geographic phenomenon.
+
+---
+
+### 10.7 Future Types
+
+The taxonomy is open. Future extensions might include:
+
+- **Temporal GSCT** — scores that change over time as a subject evolves (a college's research culture shifting, a language gaining popularity)
+- **Comparative GSCT** — relative scoring between two subjects rather than absolute scoring against anchors
+- **Adversarial GSCT** — scoring a subject that actively resists evaluation (a language designed to confuse, an institution designed to obscure its true nature)
+
+---
+
+*Section 10 authored May 2026. Multi-Dimensional GSCT and Branched GSCT introduced as extensions of the base SCT framework.*

@@ -493,3 +493,28 @@ The taxonomy is open. Future extensions might include:
 ---
 
 *Section 10 authored May 2026. Multi-Dimensional GSCT and Branched GSCT introduced as extensions of the base SCT framework.*
+
+
+
+### Glossary
+## Glossary
+
+| Term | Definition |
+|---|---|
+| **SCT** | Shariff Complexity Theorem — base model for rating programming language complexity using Esotericosity and Work Distribution |
+| **GSCT** | General SCT — SCT extended to any domain by redefining E and WD anchors |
+| **Branched GSCT** | GSCT with profile-conditional barrier tax — same subject, different score depending on who is evaluating |
+| **Multi-Dimensional GSCT** | GSCT across n independent evaluation planes, weighted and combined into one score |
+| **E (Esotericosity)** | Distance from both natural anchors — computed as min(x, y) on the cartesian plane |
+| **WD (Work Distribution)** | How much expert-level labor is pushed onto the user vs absorbed by the system |
+| **Barrier Tax** | +20 WD penalty when accessing a subject requires resources a typical person wouldn't have by default |
+| **Complex WD** | WD as a+bi when both user and system suffer simultaneously — magnitude via Pythagorean theorem |
+| **AC** | A compiled language targeting 14 output formats — [github.com/AbuCodingAI/aclang](https://github.com/AbuCodingAI/aclang) |
+| **AI** | Interpreted member of the A language family — exact decimal arithmetic, runs on AIVM. Not Artificial Intelligence |
+| **AC+** | Bare-metal systems language — targets x86-64 assembly, used for kernels and bootloaders |
+| **AIVM** | AI Virtual Machine — runtime that executes compiled AI bytecode (.aibc) |
+| **AOS** | Abu Operating System — kernel built on AC+ |
+| **JaSQL** | Readable query language for AbuDB — [github.com/AbuCodingAI/JaSQL](https://github.com/AbuCodingAI/JaSQL) |
+| **datac** | JaSQL's native file format — typed, multi-table, human-readable |
+| **deltat** | Duration type (hh:mm:ss) — elapsed time, not a point in time |
+| **Preposterous:** | Standard error prefix across the Abu Ecosystem, inherited from AC |

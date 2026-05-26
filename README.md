@@ -34,7 +34,7 @@ Languages are plotted as coordinates (x, y) on this plane, bounded 0 ≤ x, y �
 
 ### 2.2 Formula
 
-E = min(x,y)
+$$E = \min(x,\ y)$$
 
 Where (x, y) is the language's coordinate on the esotericosity plane.
 
@@ -42,17 +42,15 @@ This formula has an elegant property: **languages on the diagonal y=x have E equ
 
 | Language position | E value | Intuition |
 |---|---|---|
-| On the X axis (machine-like) | 0                              | Close to machine semantics, not esoteric  |
-| On the Y axis (human-like)   | 0                              | Close to human semantics, not esoteric    |
-| On the diagonal y=x          | equals coordinate value        | Equally far from both anchors             |
-| ASM at (0, 0)                | 0                              | Defined anchor of the model               |
-| Malbolge at (100, 100)       | 100                            | Maximum esotericosity                     |
+| On the X axis (machine-like) | 0 | Close to machine semantics, not esoteric |
+| On the Y axis (human-like) | 0 | Close to human semantics, not esoteric |
+| On the diagonal y=x | equals coordinate value | Equally far from both anchors |
+| ASM at (0, 0) | 0 | Defined anchor of the model |
+| Malbolge at (100, 100) | 100 | Maximum esotericosity |
 
 ### 2.3 Example Coordinates
 
-<img width="982" height="833" alt="Screenshot from 2026-05-25 16-08-56" src="https://github.com/user-attachments/assets/72d41c60-c018-495f-b431-5396bcc3b8bf" />
-
-*[Figure 1: Esotericosity plane — see diagram]*
+*[Figure 1: Esotericosity plane]*
 
 | Language | (x, y) | E = min(x,y) |
 |---|---|---|
@@ -85,15 +83,15 @@ WD measures how much *compiler-grade labor* is pushed onto the programmer.
 
 ### 3.2 Real-Valued WD
 
-For most languages, WD is a real number
-  
+For most languages, WD is a real number where 0 ≤ WD ≤ 120.
+
 ASM is defined as WD = 100, the fixed upper anchor of the real-valued scale.
 
-### 3.3 barrier Tax
+### 3.3 Barrier Tax
 
 If a language cannot reasonably run on a ten-year-old machine without additional cost, its WD receives a **+20 penalty**:
 
-WD += 20
+$$WD \mathrel{+}= 20$$
 
 This models practical learnability — a language requiring paid software or specialized hardware is less accessible regardless of its syntax.
 
@@ -105,15 +103,13 @@ This models practical learnability — a language requiring paid software or spe
 
 ### 3.4 Complex WD
 
-<img width="723" height="777" alt="Screenshot from 2026-05-25 16-27-30" src="https://github.com/user-attachments/assets/3355e321-c439-4d26-ae58-54c2fe8dad6e" />
-
-*[Figure 2: WD plane — see diagram]*
+*[Figure 2: Complex WD plane]*
 
 When a language forces the programmer to do compiler-grade work *and* forces the compiler into heavy decoding work simultaneously, both parties suffer redundantly. This pathological case exits the real number line.
 
 For such languages:
 
-  WD = a + bi  
+$$WD = a + bi$$
 
 Where:
 - **a** = programmer labor (real component)
@@ -122,7 +118,7 @@ Where:
 
 The effective WD magnitude is computed via the Pythagorean theorem:
 
-  |WD| = sqrt{a^2 + b^2}  
+$$|WD| = \sqrt{a^2 + b^2}$$
 
 This is geometrically meaningful: pathological languages *leave the normal abstraction line* and their complexity must be measured as a distance in 2D labor-space rather than a scalar.
 
@@ -130,81 +126,81 @@ This is geometrically meaningful: pathological languages *leave the normal abstr
 
 ## 4. SCT Formula
 
-SCT = 0.7(E) + 0.3(|WD|)  
+$$\boxed{SCT = 0.7(E) + 0.3(|WD|)}$$
 
 Where:
 - E is computed as min(x, y) from the esotericosity plane
-- |WD| = WD for real-valued cases, √(a²+b²) for complex cases
+- $|WD|$ = WD for real-valued cases, $\sqrt{a^2+b^2}$ for complex cases
 - The 0.7/0.3 weighting reflects that syntactic alienness (E) is the dominant driver of learnability difficulty, while labor distribution (WD) is a significant but secondary factor
 - SCT may exceed 100 for pathological languages — this is intentional and meaningful
 
 ---
 
 ## 5. Worked Examples
-barrier
+
 ### 5.1 Python
 - Coordinate: (10, 90). E = **10**
 - WD: Compiler absorbs almost everything. WD = **10**
 - No barrier tax.
 
-  SCT = 0.7(10) + 0.3(10) = 7 + 3 = textbf{10}  
+$$SCT = 0.7(10) + 0.3(10) = 7 + 3 = \mathbf{10}$$
 
 ### 5.2 ASM (x86-64)
 - Coordinate: (0, 0). E = **0**
 - WD: Defined anchor. WD = **100**
 - No barrier tax.
 
-  SCT = 0.7(0) + 0.3(100) = 0 + 30 = textbf{30}  
+$$SCT = 0.7(0) + 0.3(100) = 0 + 30 = \mathbf{30}$$
 
 ### 5.3 AC (A language family — compiled, 14 targets)
 - Coordinate: (15, 75). E = **15**
 - WD: Compiler handles 14 output targets automatically, massive labor absorption. WD = **20**
 - No barrier tax.
 
-  SCT = 0.7(15) + 0.3(20) = 10.5 + 6 = textbf{16.5}  
+$$SCT = 0.7(15) + 0.3(20) = 10.5 + 6 = \mathbf{16.5}$$
 
 ### 5.4 AI (A language family — interpreted, exact decimal, AIVM)
 - Coordinate: (20, 70). E = **20**
 - WD: AIVM absorbs all runtime complexity. WD = **16**
 - No barrier tax.
 
-  SCT = 0.7(20) + 0.3(16) = 14 + 4.8 = textbf{18.8}  
+$$SCT = 0.7(20) + 0.3(16) = 14 + 4.8 = \mathbf{18.8}$$
 
 ### 5.5 Lambda Calculus
 - Coordinate: (20, 20). E = **20**
 - WD: Programmer manually reasons about reduction, substitution, recursion encoding. WD = **70**
 - No barrier tax.
 
-  SCT = 0.7(20) + 0.3(70) = 14 + 21 = textbf{35}  
+$$SCT = 0.7(20) + 0.3(70) = 14 + 21 = \mathbf{35}$$
 
 ### 5.6 MATLAB
 - Coordinate: (15, 70). E = **15**
 - WD: Moderate programmer effort. WD = 40, +20 barrier tax → **60**
 
-  SCT = 0.7(15) + 0.3(60) = 10.5 + 18 = textbf{28.5}  
+$$SCT = 0.7(15) + 0.3(60) = 10.5 + 18 = \mathbf{28.5}$$
 
 ### 5.7 Malbolge
 - Coordinate: (100, 100). E = **100** (maximum)
 - WD: Programmer and interpreter both suffer maximally. Complex WD = 90 + 80i
-- |WD| = √(90² + 80²) = √14500 ≈ **120.4**
+- $|WD| = \sqrt{90^2 + 80^2} = \sqrt{14500} \approx$ **120.4**
 - No barrier tax.
 
-  SCT = 0.7(100) + 0.3(120.4) = 70 + 36.1 = textbf{106.1}  
+$$SCT = 0.7(100) + 0.3(120.4) = 70 + 36.1 = \mathbf{106.1}$$
 
 Malbolge intentionally exceeds 100 — it is the canonical example of a language designed to be impossible.
 
 ### 5.8 Whitespace
 - Coordinate: (95, 95). E = **95**
 - WD: Programmer must mentally parse invisible syntax. Complex WD = 80 + 60i
-- |WD| = √(80² + 60²) = √10000 = **100**
+- $|WD| = \sqrt{80^2 + 60^2} = \sqrt{10000} =$ **100**
 
-  SCT = 0.7(95) + 0.3(100) = 66.5 + 30 = textbf{96.5}  
+$$SCT = 0.7(95) + 0.3(100) = 66.5 + 30 = \mathbf{96.5}$$
 
 ### 5.9 SCT rating itself
 - Coordinate: (5, 80). E = **5**
 - WD: Human must classify, estimate coordinates, reason geometrically. Compiler does nothing — SCT is conceptual. WD = **40**
 
-  SCT = 0.7(5) + 0.3(40) = 3.5 + 12 = textbf{15.5}  
+$$SCT = 0.7(5) + 0.3(40) = 3.5 + 12 = \mathbf{15.5}$$
 
 SCT rates itself slightly easier than Python to understand, which feels correct.
 
@@ -212,7 +208,7 @@ SCT rates itself slightly easier than Python to understand, which feels correct.
 
 ## 6. Summary Table
 
-| Language | E |    |WD  | | SCT |
+| Language | E | \|WD\| | SCT |
 |---|---|---|---|
 | Python | 10 | 10 | **10** |
 | SCT itself | 5 | 40 | **15.5** |
@@ -249,4 +245,3 @@ SCT provides a lightweight, geometrically grounded framework for comparing progr
 *Abu Shariff, age 12. BASIS Chandler. 2026.*
 *Contact: abu.shariffaiml@gmail.com*
 *Language family referenced: AC/AI/AC+ — github.com/AbuCodingAI*
-  

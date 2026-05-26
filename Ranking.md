@@ -103,4 +103,4 @@
 | 97 | Piet | 3 | 2 | 97.5 | 96.0 | **97.0** | complex WD |
 | 98 | brain** **ck | 5 | 5 | 95.0 | 104.0 | **97.7** | complex WD |
 | 99 | Malbolge | 3 | 3 | 97.0 | 120.4 | **104.0** | complex WD |
-| 100 | Lambda Calculus | 0 | 0 | 100 | 161.41 | **118.4** | BT+20, breaks the scale |
+| 100 | Lambda Calculus | 0 | 0 | 100 | 161.4 | **118.4** | BT+20, breaks the scale |

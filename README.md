@@ -50,6 +50,8 @@ This formula has an elegant property: **languages on the diagonal y=x have E equ
 
 ### 2.3 Example Coordinates
 
+<img width="982" height="833" alt="Screenshot from 2026-05-25 16-08-56" src="https://github.com/user-attachments/assets/d141ed46-2db1-4a7b-a92e-049d97c62cb4" />
+
 *[Figure 1: Esotericosity plane]*
 
 | Language | (x, y) | E = min(x,y) |
@@ -102,6 +104,8 @@ This models practical learnability — a language requiring paid software or spe
 - COBOL → +0 (freely available)
 
 ### 3.4 Complex WD
+
+<img width="723" height="777" alt="Screenshot from 2026-05-25 16-27-30" src="https://github.com/user-attachments/assets/81d92237-1f5e-49c9-a020-f93bc7dd9a7a" />
 
 *[Figure 2: Complex WD plane]*
 

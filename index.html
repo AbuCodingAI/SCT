@@ -15,7 +15,7 @@
   --text:#e8e6f0;--muted:#6b6880;
   --mono:'DM Mono',monospace;--serif:'Fraunces',serif;
 }
-html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:var(--mono)}
+html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:var(--mono);overflow-x:hidden}
 .hero{padding:2.5rem 2rem 1.5rem;border-bottom:1px solid var(--border);background:linear-gradient(180deg,#0f0f1a 0%,var(--bg) 100%)}
 .hero h1{font-family:var(--serif);font-size:2.4rem;font-weight:900;letter-spacing:-0.02em;line-height:1.1;margin-bottom:0.4rem}
 .hero h1 span{color:var(--accent)}
@@ -26,8 +26,8 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:va
 .tabs{display:flex;border-bottom:1px solid var(--border);background:var(--surface);overflow-x:auto}
 .tab{padding:0.8rem 1.4rem;font-family:var(--mono);font-size:0.75rem;letter-spacing:0.08em;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;background:none;border-top:none;border-left:none;border-right:none;white-space:nowrap}
 .tab:hover{color:var(--text)}.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
-.panel{display:none;padding:1.5rem 2rem;max-width:1100px}.panel.active{display:block}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.panel{display:none;padding:1.5rem 2rem;max-width:1100px;box-sizing:border-box;width:100%}.panel.active{display:block}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.5rem;width:100%}
 @media(max-width:700px){.grid2{grid-template-columns:1fr}}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.2rem}
 .card-title{font-size:0.65rem;letter-spacing:0.12em;color:var(--muted);margin-bottom:0.8rem;text-transform:uppercase}
@@ -774,14 +774,17 @@ function switchTab(t,el){
 }
 
 // Init
-buildRankings();
-updateBasic();
-updateGSCT();
-[{name:'Academic',e:5,wd:60,w:0.45,d:1.0},{name:'Financial',e:8,wd:8,w:0.35,d:1.0},{name:'Culture/Fit',e:20,wd:15,w:0.20,d:0.7}].forEach(p=>{
-  const id=dimId++;
-  dims.push({id,name:p.name,e:p.e,wd:p.wd,confidence:p.d,weight:p.w});
+document.addEventListener('DOMContentLoaded', () => {
+  buildRankings();
+  updateBasic();
+  updateGSCT();
+  [{name:'Academic',e:5,wd:60,w:0.45,d:1.0},{name:'Financial',e:8,wd:8,w:0.35,d:1.0},{name:'Culture/Fit',e:20,wd:15,w:0.20,d:0.7}].forEach(p=>{
+    const id=dimId++;
+    dims.push({id,name:p.name,e:p.e,wd:p.wd,confidence:p.d,weight:p.w});
+  });
+  renderDims();
+  setTimeout(()=>drawEPlane(8,95), 100);
 });
-renderDims();
 window.addEventListener('resize',()=>{
   drawEPlane(+document.getElementById('ex').value,+document.getElementById('ey').value);
   updateMulti();

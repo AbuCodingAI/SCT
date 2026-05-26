@@ -18,54 +18,199 @@ SCT is designed to answer a different question: **given a language's design, how
 
 ---
 
-## 2. Esotericosity (E)
+## 2. Esotericosity (E) — Revised Model
 
-### 2.1 Definition
+### 2.1 Axis Definitions
 
-Esotericosity measures how far a language is from *both* machine semantics and human language semantics simultaneously.
+Esotericosity is measured on a 2D cartesian plane with two axes representing the two natural poles of programming language design:
 
-We define a 2D cartesian plane where:
+- **X axis — Machine/ASM-likeness:** How much does the language express machine-level concepts directly? This includes pointer arithmetic, manual memory management, register-level operators (`^`, `|`, `&`, `<<`, `>>`), explicit type sizes, and direct hardware access. ASM sits near the top of this axis because it is the most machine-viable language a human can actually write. Raw binary is excluded as an axis anchor because it is not a viable human-writable language — it is a theoretical limit, not a real pole.
 
-- The **X axis** represents closeness to machine/binary semantics
-- The **Y axis** represents closeness to human language semantics
-- The **origin (0, 0)** is defined as Assembly (ASM) — the closest a human-readable language gets to raw binary, and the fixed anchor of the entire model
+- **Y axis — Conventional readable syntax:** How close is the language to what humans consider normal, readable code? This means familiar keywords, readable structure, standard operators, and conventional programming patterns. No language reaches 100 — Python at 95 is the practical ceiling. This axis is NOT natural English — it is readable programming syntax. A language like COBOL scores high here because `MOVE SALARY TO DISPLAY` is readable conventional code, not because it is English prose.
 
-Languages are plotted as coordinates (x, y) on this plane, bounded 0 ≤ x, y ≤ 100. A language close to the X axis is machine-like. A language close to the Y axis is human-like. A language near the diagonal y=x — equidistant from both axes — is maximally esoteric.
+- **Origin (0, 0) — The void:** A language with zero machine concepts AND zero readable syntax. This is the theoretical maximum esotericosity — a language that belongs to neither world. Malbolge and Whitespace approach this point. It is not a perfect language; it is a non-language. Attempting to evaluate a language at exactly (0,0) is undefined — *Preposterous: NoLanguage.*
 
-### 2.2 Formula
+### 2.2 Why Binary Is Not an Axis
 
-$$E = \min(x,\ y)$$
+Early versions of this model used binary/machine code as the X axis anchor. This was incorrect. Binary is not a language humans write — it is what languages compile to. Including it as an axis distorts the plane because no human-writable language actually approaches it. ASM is the correct anchor: it is the closest a human can get to machine semantics while still writing something readable.
 
-Where (x, y) is the language's coordinate on the esotericosity plane.
+### 2.3 Formula
 
-This formula has an elegant property: **languages on the diagonal y=x have E equal to their coordinate value, making the diagonal the natural scale of esotericosity itself.** A language at (50, 50) has E=50; at (75, 75) has E=75; at (100, 100) has E=100. The diagonal is not just where high-E languages live — it is the E scale.
+$$E = 100\left(1 - \frac{\sqrt{x^2 + y^2}}{100\sqrt{2}}\right)$$
 
-| Language position | E value | Intuition |
+Where:
+- $(x, y)$ is the language's coordinate on the esotericosity plane
+- $100\sqrt{2} \approx 141.4$ is the maximum possible distance from origin (at coordinate (100,100))
+- E is bounded $0 \leq E \leq 100$
+
+**Key properties:**
+
+| Condition | E value | Intuition |
 |---|---|---|
-| On the X axis (machine-like) | 0 | Close to machine semantics, not esoteric |
-| On the Y axis (human-like) | 0 | Close to human semantics, not esoteric |
-| On the diagonal y=x | equals coordinate value | Equally far from both anchors |
-| ASM at (0, 0) | 0 | Defined anchor of the model |
-| Malbolge at (100, 100) | 100 | Maximum esotericosity |
+| Origin (0,0) | 100 | Maximum esotericosity — belongs to nothing |
+| On X axis at (100,0) | 29.3 | Machine-like but not human — low-moderate E |
+| On Y axis at (0,100) | 29.3 | Human-like but not machine — low-moderate E |
+| Corner (100,100) | 0 | Perfect language — maximally both |
+| ASM ≈ (95,18) | 31.6 | Close to X axis — low E ✓ |
+| Python ≈ (8,95) | 32.6 | Close to Y axis — low E ✓ |
+| Malbolge ≈ (3,3) | 97.0 | Near origin — maximum E ✓ |
 
-### 2.3 Example Coordinates
+**Why distance from origin, not min(x,y):**
 
-<img width="982" height="833" alt="Screenshot from 2026-05-25 16-08-56" src="https://github.com/user-attachments/assets/d141ed46-2db1-4a7b-a92e-049d97c62cb4" />
+The previous formula E = min(x,y) collapsed unfairly — a language at (5,95) and one at (5,5) both got E=5, despite being in completely different regions of the plane. (5,5) is near the void and should have HIGH E. (5,95) is close to the Y axis and should have LOW E. Distance from origin correctly separates these cases because both coordinates contribute simultaneously.
 
-*[Figure 1: Esotericosity plane]*
+**The Python/ASM symmetry:**
 
-| Language | (x, y) | E = min(x,y) |
-|---|---|---|
-| ASM | (0, 0) | 0 |
-| Python | (10, 90) | 10 |
-| AC | (15, 75) | 15 |
-| AI | (20, 70) | 20 |
-| C | (60, 30) | 30 |
-| Lambda Calculus | (20, 20) | 20 |
-| Whitespace | (95, 95) | 95 |
-| Malbolge | (100, 100) | 100 |
+Python (E≈32.6) and ASM (E≈31.6) score nearly identically — for opposite reasons. Python is maximally readable-syntax and minimally machine-like. ASM is maximally machine-like and minimally readable-syntax. Both are close to their respective axes, far from the void. The model correctly gives them similar E scores because both are genuinely non-esoteric — they each belong firmly to one pole.
+
+### 2.4 Language Coordinates and E Scores
+
+*[Figure 1: Esotericosity plane — see Desmos diagram]*
+
+| Language | X (machine-like) | Y (readable syntax) | E |
+|---|---|---|---|
+| Malbolge | 3 | 3 | **97.0** |
+| Whitespace | 5 | 5 | **96.5** |
+| Lambda Calculus | 5 | 8 | **93.4** |
+| INTERCAL | 12 | 50 | **63.4** |
+| Java | 30 | 68 | **49.8** |
+| MATLAB | 18 | 65 | **50.8** |
+| Go | 45 | 70 | **41.8** |
+| Rust | 68 | 50 | **41.8** |
+| C | 75 | 30 | **42.9** |
+| C++ | 78 | 32 | **40.4** |
+| COBOL | 10 | 92 | **34.6** |
+| Python | 8 | 95 | **32.6** |
+| ASM | 95 | 18 | **31.6** |
+| AC | 20 | 85 | **38.3** |
+| AI language | 15 | 82 | **40.1** |
+| JaSQL | 5 | 90 | **35.1** |
+
+### 2.5 The Void and the Perfect Language
+
+Two theoretical extremes bound the model:
+
+**The void (0,0):** Zero machine concepts, zero readable syntax. Belongs to nothing. Maximum E=100. Not a language — a hole in the space of languages. *Preposterous: NoLanguage.*
+
+**The perfect language (100,100):** Maximally machine-expressive AND maximally readable. E=0. This language does not exist and may be impossible — being fully machine-expressive typically requires sacrificing readability and vice versa. It is the unreachable ideal that all language design moves toward.
 
 ---
+
+## 5. Worked Examples — Revised
+
+### 5.1 Python
+- Coordinate: (8, 95)
+- X=8: bitwise relics (`^`, `|`, `&`, `<<`, `>>`) inherited from C are the only machine-level constructs
+- Y=95: most readable conventional syntax of any general-purpose language
+- E = 100(1 - √(64+9025)/141.4) = 100(1 - 95.3/141.4) = **32.6**
+- WD = 10 (compiler absorbs almost everything)
+
+$$SCT = 0.7(32.6) + 0.3(10) = 22.8 + 3 = \mathbf{25.8}$$
+
+### 5.2 ASM (x86-64)
+- Coordinate: (95, 18)
+- X=95: direct register manipulation, explicit memory addresses, hardware instructions
+- Y=18: mnemonics like `mov`, `rax`, `rdi` are barely readable — functional but not conventional syntax
+- E = 100(1 - √(9025+324)/141.4) = 100(1 - 96.7/141.4) = **31.6**
+- WD = 100 (defined anchor)
+
+$$SCT = 0.7(31.6) + 0.3(100) = 22.1 + 30 = \mathbf{52.1}$$
+
+### 5.3 C
+- Coordinate: (75, 30)
+- X=75: pointers, manual memory, bitwise operators, explicit types
+- Y=30: recognizable keywords but sparse and unforgiving
+- E = 100(1 - √(5625+900)/141.4) = 100(1 - 80.8/141.4) = **42.9**
+- WD = 45 (programmer handles memory, types, all edge cases)
+
+$$SCT = 0.7(42.9) + 0.3(45) = 30.0 + 13.5 = \mathbf{43.5}$$
+
+### 5.4 C++
+- Coordinate: (78, 32)
+- X=78: everything C has plus templates, operator overloading
+- Y=32: slightly more readable than C but denser
+- E = 100(1 - √(6084+1024)/141.4) = 100(1 - 84.3/141.4) = **40.4**
+- WD = 55 (all of C's burden plus template metaprogramming complexity)
+
+$$SCT = 0.7(40.4) + 0.3(55) = 28.3 + 16.5 = \mathbf{44.8}$$
+
+### 5.5 Rust
+- Coordinate: (68, 50)
+- X=68: explicit ownership, lifetimes, unsafe blocks, bitwise operators
+- Y=50: more readable than C, less than Go — ownership syntax is unfamiliar but structured
+- E = 100(1 - √(4624+2500)/141.4) = 100(1 - 84.4/141.4) = **40.3**
+- WD = 55 (borrow checker pushes compiler-grade reasoning onto programmer)
+
+$$SCT = 0.7(40.3) + 0.3(55) = 28.2 + 16.5 = \mathbf{44.7}$$
+
+### 5.6 Go
+- Coordinate: (45, 70)
+- X=45: explicit types, some pointers, goroutine primitives
+- Y=70: clean conventional syntax, readable but strict
+- E = 100(1 - √(2025+4900)/141.4) = 100(1 - 83.2/141.4) = **41.2**
+- WD = 25 (compiler handles a lot, garbage collected, strict but not punishing)
+
+$$SCT = 0.7(41.2) + 0.3(25) = 28.8 + 7.5 = \mathbf{36.3}$$
+
+### 5.7 Java
+- Coordinate: (30, 68)
+- X=30: typed, some low-level concepts, verbose boilerplate
+- Y=68: readable keywords but verbose ceremony (`public static void main`)
+- E = 100(1 - √(900+4624)/141.4) = 100(1 - 74.3/141.4) = **47.5**
+- WD = 30 (JVM absorbs a lot but programmer writes enormous boilerplate)
+
+$$SCT = 0.7(47.5) + 0.3(30) = 33.3 + 9 = \mathbf{42.3}$$
+
+### 5.8 MATLAB
+- Coordinate: (18, 65)
+- X=18: matrix operators, some low-level indexing concepts
+- Y=65: readable but domain-specific, unusual syntax for non-math people
+- E = 100(1 - √(324+4225)/141.4) = 100(1 - 67.5/141.4) = **52.3**
+- WD = 35, +20 barrier tax → **55**
+
+$$SCT = 0.7(52.3) + 0.3(55) = 36.6 + 16.5 = \mathbf{53.1}$$
+
+### 5.9 Lambda Calculus
+- Coordinate: (5, 8)
+- X=5: no machine concepts whatsoever — pure mathematical abstraction
+- Y=8: `λx.λy.x` is not conventional readable syntax by any measure
+- E = 100(1 - √(25+64)/141.4) = 100(1 - 9.4/141.4) = **93.4**
+- WD = 70 (programmer manually reasons about reduction, substitution, Church encodings)
+
+$$SCT = 0.7(93.4) + 0.3(70) = 65.4 + 21 = \mathbf{86.4}$$
+
+### 5.10 COBOL
+- Coordinate: (10, 92)
+- X=10: `END-IF`, `END-PERFORM` delimiters have slight machine-like block management quality
+- Y=92: `MOVE SALARY TO DISPLAY` reads as close to conventional readable code as anything ever written — designed explicitly for business manager readability in 1959
+- E = 100(1 - √(100+8464)/141.4) = 100(1 - 92.5/141.4) = **34.6**
+- WD = 20 (runtime absorbs most complexity; programmer writes verbose but simple statements)
+
+$$SCT = 0.7(34.6) + 0.3(20) = 24.2 + 6 = \mathbf{30.2}$$
+
+COBOL scores **30.2** — nearly identical to Python (25.8) and ASM (52.1 — wait, ASM WD pulls it up significantly). COBOL's reputation as a painful language is an ecosystem and tooling problem, not a language design problem. SCT correctly identifies this.
+
+### 5.11 INTERCAL
+- Coordinate: (12, 50)
+- X=12: has a unary OR and binary XOR but presented so abstractly they barely count
+- Y=50: `PLEASE DO FORGET` uses English words in conventional statement structure — genuinely more readable than Lambda Calculus despite being a joke language
+- E = 100(1 - √(144+2500)/141.4) = 100(1 - 51.4/141.4) = **63.7**
+- WD = 80 (programmer must manage PLEASE frequency or compiler refuses — genuinely pathological labor)
+- Complex WD: the compiler actively sabotages you. WD = 75 + 40i → |WD| = √(5625+1600) = **84.9**
+
+$$SCT = 0.7(63.7) + 0.3(84.9) = 44.6 + 25.5 = \mathbf{70.1}$$
+
+INTERCAL scores 70.1 — in the extreme category, which is correct. The PLEASE mechanism alone makes WD complex.
+
+### 5.12 Malbolge
+- Coordinate: (3, 3)
+- E = 100(1 - √(9+9)/141.4) = 100(1 - 4.2/141.4) = **97.0**
+- Complex WD = 90 + 80i → |WD| = **120.4**
+
+$$SCT = 0.7(97.0) + 0.3(120.4) = 67.9 + 36.1 = \mathbf{104.0}$$
+
+---
+
 
 ## 3. Work Distribution (WD)
 
@@ -105,8 +250,6 @@ This models practical learnability — a language requiring paid software or spe
 
 ### 3.4 Complex WD
 
-<img width="723" height="777" alt="Screenshot from 2026-05-25 16-27-30" src="https://github.com/user-attachments/assets/81d92237-1f5e-49c9-a020-f93bc7dd9a7a" />
-
 *[Figure 2: Complex WD plane]*
 
 When a language forces the programmer to do compiler-grade work *and* forces the compiler into heavy decoding work simultaneously, both parties suffer redundantly. This pathological case exits the real number line.
@@ -140,91 +283,24 @@ Where:
 
 ---
 
-## 5. Worked Examples
 
-### 5.1 Python
-- Coordinate: (10, 90). E = **10**
-- WD: Compiler absorbs almost everything. WD = **10**
-- No barrier tax.
-
-$$SCT = 0.7(10) + 0.3(10) = 7 + 3 = \mathbf{10}$$
-
-### 5.2 ASM (x86-64)
-- Coordinate: (0, 0). E = **0**
-- WD: Defined anchor. WD = **100**
-- No barrier tax.
-
-$$SCT = 0.7(0) + 0.3(100) = 0 + 30 = \mathbf{30}$$
-
-### 5.3 AC (A language family — compiled, 14 targets)
-- Coordinate: (15, 75). E = **15**
-- WD: Compiler handles 14 output targets automatically, massive labor absorption. WD = **20**
-- No barrier tax.
-
-$$SCT = 0.7(15) + 0.3(20) = 10.5 + 6 = \mathbf{16.5}$$
-
-### 5.4 AI (A language family — interpreted, exact decimal, AIVM)
-- Coordinate: (20, 70). E = **20**
-- WD: AIVM absorbs all runtime complexity. WD = **16**
-- No barrier tax.
-
-$$SCT = 0.7(20) + 0.3(16) = 14 + 4.8 = \mathbf{18.8}$$
-
-### 5.5 Lambda Calculus
-- Coordinate: (20, 20). E = **20**
-- WD: Programmer manually reasons about reduction, substitution, recursion encoding. WD = **70**
-- No barrier tax.
-
-$$SCT = 0.7(20) + 0.3(70) = 14 + 21 = \mathbf{35}$$
-
-### 5.6 MATLAB
-- Coordinate: (15, 70). E = **15**
-- WD: Moderate programmer effort. WD = 40, +20 barrier tax → **60**
-
-$$SCT = 0.7(15) + 0.3(60) = 10.5 + 18 = \mathbf{28.5}$$
-
-### 5.7 Malbolge
-- Coordinate: (100, 100). E = **100** (maximum)
-- WD: Programmer and interpreter both suffer maximally. Complex WD = 90 + 80i
-- $|WD| = \sqrt{90^2 + 80^2} = \sqrt{14500} \approx$ **120.4**
-- No barrier tax.
-
-$$SCT = 0.7(100) + 0.3(120.4) = 70 + 36.1 = \mathbf{106.1}$$
-
-Malbolge intentionally exceeds 100 — it is the canonical example of a language designed to be impossible.
-
-### 5.8 Whitespace
-- Coordinate: (95, 95). E = **95**
-- WD: Programmer must mentally parse invisible syntax. Complex WD = 80 + 60i
-- $|WD| = \sqrt{80^2 + 60^2} = \sqrt{10000} =$ **100**
-
-$$SCT = 0.7(95) + 0.3(100) = 66.5 + 30 = \mathbf{96.5}$$
-
-### 5.9 SCT rating itself
-- Coordinate: (5, 80). E = **5**
-- WD: Human must classify, estimate coordinates, reason geometrically. Compiler does nothing — SCT is conceptual. WD = **40**
-
-$$SCT = 0.7(5) + 0.3(40) = 3.5 + 12 = \mathbf{15.5}$$
-
-SCT rates itself slightly easier than Python to understand, which feels correct.
-
----
-
-## 6. Summary Table
+## 6. Summary Table — Revised
 
 | Language | E | \|WD\| | SCT |
 |---|---|---|---|
-| Python | 10 | 10 | **10** |
-| SCT itself | 5 | 40 | **15.5** |
-| AC | 15 | 20 | **16.5** |
-| AI | 20 | 16 | **18.8** |
-| MATLAB | 15 | 60 | **28.5** |
-| ASM | 0 | 100 | **30** |
-| Lambda Calculus | 20 | 70 | **35** |
-| Whitespace | 95 | 100 | **96.5** |
-| Malbolge | 100 | 120.4 | **106.1** |
+| Python | 32.6 | 10 | **25.8** |
+| COBOL | 34.6 | 20 | **30.2** |
+| ASM | 31.6 | 100 | **52.1** |
+| Go | 41.2 | 25 | **36.3** |
+| Java | 47.5 | 30 | **42.3** |
+| C | 42.9 | 45 | **43.5** |
+| Rust | 40.3 | 55 | **44.7** |
+| C++ | 40.4 | 55 | **44.8** |
+| MATLAB | 52.3 | 55 | **53.1** |
+| Lambda Calculus | 93.4 | 70 | **86.4** |
+| INTERCAL | 63.7 | 84.9 | **70.1** |
+| Malbolge | 97.0 | 120.4 | **104.0** |
 
----
 
 ## 7. Limitations and Future Work
 
@@ -494,27 +570,142 @@ The taxonomy is open. Future extensions might include:
 
 *Section 10 authored May 2026. Multi-Dimensional GSCT and Branched GSCT introduced as extensions of the base SCT framework.*
 
+---
 
+## 11. Fractional Planes — GSCT Under Incomplete Information
 
-### Glossary
-## Glossary
+### 11.1 Motivation
 
-| Term | Definition |
+Integer planes assume complete observability — you can fully evaluate every dimension you include. But real evaluation is rarely complete. You can research a college's academic reputation exhaustively. You cannot fully know its culture until you live it.
+
+Fractional planes model this. A dimension you can partially observe contributes partially to the score.
+
+This is not a flaw in the framework. It is the framework correctly modeling epistemic reality.
+
+---
+
+### 11.2 Fractional Dimensions in Mathematics
+
+Fractional dimensions are not invented here. In fractal geometry, the Hausdorff dimension of a coastline is approximately 1.25 — more than a line (1), less than a plane (2). The coastline occupies a fractional dimensional space because it is too complex to be a line but too sparse to fill a plane.
+
+GSCT borrows this concept. A fractional plane $d \in (0, 1)$ represents a dimension that exists and matters but cannot be fully observed. It contributes $d$ of its full weight to the final score.
+
+---
+
+### 11.3 Formal Definition
+
+For a fractional plane at confidence $d_i \in (0, 1]$:
+
+$$GSCT_{n}(S, P) = \sum_{i=1}^{\lfloor n \rfloor} w_i \cdot D_i + d_{frac} \cdot w_{frac} \cdot D_{frac}$$
+
+Where:
+- $\lfloor n \rfloor$ = number of full integer planes
+- $d_{frac}$ = fractional confidence of the partial plane (e.g. 0.7 for n=2.7)
+- $w_{frac}$ = weight assigned to the fractional dimension
+- All weights still sum to 1: $\sum w_i + w_{frac} = 1$
+
+More compactly, treating each plane's effective contribution as $d_i \cdot w_i$ where $d_i = 1$ for full planes:
+
+$$GSCT_{n}(S, P) = \sum_{i=1}^{n} d_i \cdot w_i \cdot D_i(E_i, |WD_i| + BT_i(S, P))$$
+
+This is the **true master equation** — it subsumes all previous forms:
+
+| Conditions | Reduces to |
 |---|---|
-| **SCT** | Shariff Complexity Theorem — base model for rating programming language complexity using Esotericosity and Work Distribution |
-| **GSCT** | General SCT — SCT extended to any domain by redefining E and WD anchors |
-| **Branched GSCT** | GSCT with profile-conditional barrier tax — same subject, different score depending on who is evaluating |
-| **Multi-Dimensional GSCT** | GSCT across n independent evaluation planes, weighted and combined into one score |
-| **E (Esotericosity)** | Distance from both natural anchors — computed as min(x, y) on the cartesian plane |
-| **WD (Work Distribution)** | How much expert-level labor is pushed onto the user vs absorbed by the system |
-| **Barrier Tax** | +20 WD penalty when accessing a subject requires resources a typical person wouldn't have by default |
-| **Complex WD** | WD as a+bi when both user and system suffer simultaneously — magnitude via Pythagorean theorem |
-| **AC** | A compiled language targeting 14 output formats — [github.com/AbuCodingAI/aclang](https://github.com/AbuCodingAI/aclang) |
-| **AI** | Interpreted member of the A language family — exact decimal arithmetic, runs on AIVM. Not Artificial Intelligence |
-| **AC+** | Bare-metal systems language — targets x86-64 assembly, used for kernels and bootloaders |
-| **AIVM** | AI Virtual Machine — runtime that executes compiled AI bytecode (.aibc) |
-| **AOS** | Abu Operating System — kernel built on AC+ |
-| **JaSQL** | Readable query language for AbuDB — [github.com/AbuCodingAI/JaSQL](https://github.com/AbuCodingAI/JaSQL) |
-| **datac** | JaSQL's native file format — typed, multi-table, human-readable |
-| **deltat** | Duration type (hh:mm:ss) — elapsed time, not a point in time |
-| **Preposterous:** | Standard error prefix across the Abu Ecosystem, inherited from AC |
+| $n=1$, $d_1=1$, $BT=0$ | Base SCT/GSCT |
+| $n=1$, $d_1=1$, $BT(S,P)$ varies | Branched GSCT |
+| $n>1$, all $d_i=1$, $BT=0$ | Multi-Dimensional GSCT |
+| $n>1$, all $d_i=1$, $BT$ varies | Full GSCT |
+| $n$ fractional, $d_i \in (0,1]$ | Fractional GSCT |
+
+---
+
+### 11.4 The Confidence Coefficient
+
+$d_i$ is the **confidence coefficient** for plane i — how well you can actually observe and measure this dimension.
+
+| $d_i$ | Interpretation |
+|---|---|
+| 1.0 | Fully observable — public data, verifiable facts |
+| 0.7–0.9 | Mostly observable — visited, researched, but uncertain |
+| 0.4–0.6 | Partially observable — secondhand information only |
+| 0.1–0.3 | Barely observable — exists but almost unmeasurable |
+| 0.0 | Unobserved — equivalent to excluding the plane |
+
+As you gather more information, $d_i$ increases toward 1.0. The score **converges toward truth** as uncertainty collapses — exactly analogous to a quantum wavefunction collapsing on observation.
+
+---
+
+### 11.5 Key Property — Uncertainty Dampens Extremes
+
+A fractional plane with $d_i < 1$ dampens extreme scores in that dimension. A subject with a very bad culture score (D3 = 42) is penalized less under fractional evaluation than integer evaluation, because you're not certain the score is accurate.
+
+This is correct behavior. Extreme claims under high uncertainty should carry less weight.
+
+Formally: as $d_i \to 0$, that dimension's contribution vanishes regardless of its score. As $d_i \to 1$, full contribution is restored.
+
+---
+
+### 11.6 Worked Example — College Ranking at n=2.7
+
+Three dimensions, D3 fractional at confidence 0.7:
+
+- **D1 Academic** — $d_1 = 1.0$, $w_1 = 0.45$ (fully observable)
+- **D2 Financial** — $d_2 = 1.0$, $w_2 = 0.35$ (fully observable)
+- **D3 Culture/Fit** — $d_3 = 0.7$, $w_3 = 0.20$ (researchable but not fully knowable until enrollment)
+
+$$GSCT_{2.7} = 0.45 \cdot D_1 + 0.35 \cdot D_2 + 0.7 \times 0.20 \cdot D_3$$
+$$= 0.45(D_1) + 0.35(D_2) + 0.14(D_3)$$
+
+| College | D1 | D2 | D3 | GSCT_2.7 |
+|---|---|---|---|---|
+| MIT | 21.5 | 8 | 14 | **11.6** |
+| Caltech | 23.1 | 8 | 16 | **13.2** |
+| Princeton | 23.5 | 10 | 35 | **19.1** |
+| Carnegie Mellon | 22.4 | 22 | 22 | **20.9** |
+| Cornell | 33 | 12 | 28 | **23.7** |
+| Harvard | 34.5 | 10 | 38 | **24.1** |
+| Yale | 40 | 10 | 42 | **27.9** |
+| UPenn | 30 | 28 | 40 | **29.2** |
+| Brown | 35.5 | 26 | 36 | **29.9** |
+| Columbia | 35 | 32 | 30 | **31.5** |
+
+**What the fractional plane reveals:**
+
+Princeton jumps from 4th to 3rd compared to integer n=4 ranking. Its culture score is extreme (high E — neither pure research nor pure social) but the 0.7 confidence dampens that penalty. Under full certainty Princeton's culture would hurt it more.
+
+Carnegie Mellon drops slightly for the same reason — its bad culture score is also dampened, but not enough to overcome Princeton's stronger academic and financial scores.
+
+**The fundamental insight:** fractional planes make the ranking more honest. You know MIT is academically and financially superior with high confidence. You are less certain about culture. The framework respects that uncertainty rather than pretending you know things you don't.
+
+---
+
+### 11.7 Zero Planes — The Undefined Case
+
+If $n = 0$, the sum is empty and evaluates to 0. But this is not a score of zero complexity — it is an undefined evaluation. You have chosen no dimensions to measure on.
+
+Formally:
+
+$$GSCT_{full}(S,P)\bigg|_{n=0} = \text{undefined}$$
+
+Evaluating something on zero criteria is not an evaluation. It is the computational equivalent of dividing by zero — and should be treated as such. In implementation, $n = 0$ should raise an error.
+
+*Preposterous: NoDimensions — cannot evaluate on zero planes.*
+
+---
+
+### 11.8 Connection to Quantum Mechanics
+
+The fractional plane framework has structural parallels to quantum mechanics that are more than superficial:
+
+- **Wavefunction** — a superposition of states, each with a probability amplitude. Collapses to a definite state on observation. Analogous to a fractional plane collapsing to $d_i = 1$ as you gather information.
+
+- **Schrödinger equation** — describes how quantum states evolve over time. Analogous to how GSCT scores evolve as confidence coefficients increase toward 1.
+
+- **Dirac equation** — extended Schrödinger to be relativistically consistent, accidentally predicting antimatter as a mathematical side effect. The fractional plane extension similarly revealed that uncertainty dampens extremes as an emergent property of the math, not a deliberate design decision.
+
+The master equation with fractional planes is therefore not just a complexity metric. It is a **framework for evaluation under uncertainty** — which is the condition under which all real decisions are made.
+
+---
+
+*Section 11 authored May 2026. Fractional plane extension introduced as the final generalization of the SCT framework.*

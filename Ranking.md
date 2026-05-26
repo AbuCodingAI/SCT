@@ -95,12 +95,12 @@
 | 89 | Prolog | 8 | 35 | 74.6 | 72 | **73.8** |  |
 | 90 | Shakespeare | 3 | 35 | 75.2 | 73.5 | **74.7** | complex WD |
 | 91 | Mercury | 10 | 32 | 76.3 | 75 | **75.9** |  |
-| 92 | Lambda Calculus | 5 | 8 | 93.3 | 70 | **86.3** |  |
-| 93 | Befunge | 10 | 15 | 87.3 | 85.5 | **86.8** | complex WD |
-| 94 | Unlambda | 5 | 8 | 93.3 | 94.3 | **93.6** | complex WD |
-| 95 | Minecraft Redstone | 8 | 12 | 89.8 | 110.1 | **95.9** | BT+20, complex WD |
-| 96 | Ook! | 3 | 8 | 94.0 | 101.2 | **96.2** | complex WD |
-| 97 | Whitespace | 5 | 5 | 95.0 | 100.0 | **96.5** | complex WD |
-| 98 | Piet | 3 | 2 | 97.5 | 96.0 | **97.0** | complex WD |
-| 99 | brain** **ck | 5 | 5 | 95.0 | 104.0 | **97.7** | complex WD |
-| 100 | Malbolge | 3 | 3 | 97.0 | 120.4 | **104.0** | complex WD |
+| 92 | Befunge | 10 | 15 | 87.3 | 85.5 | **86.8** | complex WD |
+| 93 | Unlambda | 5 | 8 | 93.3 | 94.3 | **93.6** | complex WD |
+| 94 | Minecraft Redstone | 8 | 12 | 89.8 | 110.1 | **95.9** | BT+20, complex WD |
+| 95 | Ook! | 3 | 8 | 94.0 | 101.2 | **96.2** | complex WD |
+| 96 | Whitespace | 5 | 5 | 95.0 | 100.0 | **96.5** | complex WD |
+| 97 | Piet | 3 | 2 | 97.5 | 96.0 | **97.0** | complex WD |
+| 98 | brain** **ck | 5 | 5 | 95.0 | 104.0 | **97.7** | complex WD |
+| 99 | Malbolge | 3 | 3 | 97.0 | 120.4 | **104.0** | complex WD |
+| 100 | Lambda Calculus | 0 | 0 | 100 | 161.41 | **118.4** | BT+20, breaks the scale |

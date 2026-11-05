@@ -314,9 +314,9 @@ Setting n = 1 recovers base SCT, which verifies backward compatibility (analogou
 
 Some dimensions are less observable than others: academic reputation is highly knowable, whereas campus "culture and fit" is only partly knowable. Each plane receives a confidence coefficient d_i ∈ (0, 1]:
 
-$$GSCT_{full}(S, P) = \sum_i d_i \cdot w_i \cdot D_i\big(E_i,\ |WD_i| + BT_i(S, P)\big)$$
+$$GSCT_{full}(S, P) = \frac{\sum_i d_i \cdot w_i \cdot D_i\big(E_i,\ |WD_i| + BT_i(S, P)\big)}{\sum_i d_i \cdot w_i}$$
 
-Because n may now be non-integer (n = Σd_i), the effect is to *dampen extremes*: an extreme score in a low-confidence dimension contributes less than the same score at full confidence. Setting every d_i = 1 gives the integer case; setting n = 1, d = 1, BT = 0 gives base SCT.
+The denominator renormalizes the effective weights so they still sum to 1. Without it, any d_i < 1 would shrink the total toward 0, and because lower is better, an uncertain plane would make the subject look *better* than it is. With it, a low-confidence plane simply counts for less and the remaining planes count proportionally more: an extreme score in a dimension that is only partly knowable cannot dominate the result. The number of planes becomes effectively non-integer (n = Σd_i). Setting every d_i = 1 makes the denominator 1 and gives the integer case; setting n = 1, d = 1, BT = 0 gives base SCT.
 
 ### 10.5 Worked example: ranking ten universities (n = 4)
 
@@ -343,18 +343,18 @@ Three planes: Academic (w = 0.45, d = 1.0), Financial (w = 0.35, d = 1.0) and Cu
 
 | University | Academic | Financial | Culture/Fit | GSCT (d = 0.7 on Fit) | Same planes at d = 1.0 |
 |---|---|---|---|---|---|
-| MIT | 21.5 | 8 | 14 | **14.4** | 15.3 |
-| Caltech | 23.1 | 8 | 16 | **15.4** | 16.4 |
-| Princeton | 23.5 | 10 | 35 | **19.0** | 21.1 |
-| Carnegie Mellon | 22.4 | 22 | 22 | **20.9** | 22.2 |
-| Cornell | 33 | 12 | 28 | **23.0** | 24.6 |
-| Harvard | 34.5 | 10 | 38 | **24.3** | 26.6 |
-| Yale | 40 | 10 | 42 | **27.4** | 29.9 |
-| UPenn | 30 | 28 | 40 | **28.9** | 31.3 |
-| Brown | 35.5 | 26 | 36 | **30.1** | 32.3 |
-| Columbia | 35 | 32 | 30 | **31.1** | 33.0 |
+| MIT | 21.5 | 8 | 14 | **15.4** | 15.3 |
+| Caltech | 23.1 | 8 | 16 | **16.4** | 16.4 |
+| Princeton | 23.5 | 10 | 35 | **20.2** | 21.1 |
+| Carnegie Mellon | 22.4 | 22 | 22 | **22.2** | 22.2 |
+| Cornell | 33 | 12 | 28 | **24.4** | 24.6 |
+| Harvard | 34.5 | 10 | 38 | **25.9** | 26.6 |
+| Yale | 40 | 10 | 42 | **29.1** | 29.9 |
+| UPenn | 30 | 28 | 40 | **30.7** | 31.3 |
+| Brown | 35.5 | 26 | 36 | **32.0** | 32.3 |
+| Columbia | 35 | 32 | 30 | **33.1** | 33.0 |
 
-Princeton (19.0) ranks ahead of Carnegie Mellon (20.9). Two effects contribute, and they should be kept apart. First, the plane set changes: Princeton's weakness in the n = 4 table was its Career and Geographic scores, which this configuration drops. That alone already puts Princeton ahead (21.1 vs 22.2 at full confidence). Second, confidence dampening widens the gap (from 1.1 to 1.9 points) because Princeton's higher Culture/Fit score (35 vs 22) is discounted more. MIT ranks first in every configuration tested.
+Princeton (20.2) ranks ahead of Carnegie Mellon (22.2). Two effects contribute, and they should be kept apart. First, the plane set changes: Princeton's weakness in the n = 4 table was its Career and Geographic scores, which this configuration drops. That alone already puts Princeton ahead (21.1 vs 22.2 at full confidence). Second, lowering confidence in Culture/Fit shifts weight onto the Academic and Financial planes. Princeton's Fit score (35) is worse than its other planes, so counting it less helps Princeton, while Carnegie Mellon's planes are all near 22 and barely move; the gap widens from 1.1 to 2.0 points. MIT ranks first in every configuration tested.
 
 ### 10.7 Verbosity extension
 

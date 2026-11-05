@@ -106,17 +106,17 @@ Fractional Planes (The Really Interesting Part)
 Here's the problem: you can fully research a college's tuition. You cannot fully know its culture until you actually live there.
 So what if a dimension is only partially observable?
 You give it a confidence coefficient between 0 and 1. A dimension you know perfectly gets 1.0. A dimension you can only partially observe gets 0.7, or 0.5, or whatever reflects your uncertainty.
-The fractional dimension contributes partially to the score.
+The fractional dimension contributes partially to the score, and the dimensions you're sure about count proportionally more.
 The beautiful side effect: uncertainty dampens extreme scores. If you're not sure about a college's culture, an extreme culture score (good or bad) counts less. Which is exactly right — you shouldn't be fully penalized or fully rewarded for something you can't fully measure.
 As you gather more information, fractional dimensions become whole dimensions. Your score converges toward truth.
 This is exactly how quantum mechanics works — a wavefunction is a superposition of possibilities that collapses toward a definite state as you observe it.
 
 The Master Equation
 All of these ideas combine into one equation:
-GSCT=∑i=1ndi⋅wi⋅DiGSCT = \sum_{i=1}^{n} d_i \cdot w_i \cdot D_iGSCT=i=1∑n​di​⋅wi​⋅Di​
+$$GSCT = \frac{\sum_{i=1}^{n} d_i \cdot w_i \cdot D_i}{\sum_{i=1}^{n} d_i \cdot w_i}$$
 In plain English:
 
-For each dimension you care about, multiply its score by how much you trust your measurement of it, and by how much that dimension matters to you. Add them all up.
+For each dimension you care about, multiply its score by how much you trust your measurement of it, and by how much that dimension matters to you. Add them all up, then divide by the total of (trust × importance), so the weights still add to 1. Without that division, being unsure about a dimension would quietly lower the score, and since lower is better, uncertainty would make things look better than they are.
 
 
 n = how many dimensions you're evaluating on (can be fractional)

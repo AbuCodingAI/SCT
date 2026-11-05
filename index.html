@@ -252,7 +252,7 @@ footer a{color:var(--accent);text-decoration:none}
 <div class="panel" id="panel-multi">
   <div class="tab-content-header">
     <h2>Multi-Dimensional GSCT</h2>
-    <p>n independent evaluation planes. n can be fractional — set confidence below 1.0 for partially observable dimensions. Master equation: GSCT = Σ dᵢ·wᵢ·Dᵢ</p>
+    <p>n independent evaluation planes. n can be fractional — set confidence below 1.0 for partially observable dimensions. Master equation: GSCT = Σ dᵢ·wᵢ·Dᵢ / Σ dᵢ·wᵢ</p>
   </div>
   <div class="grid2">
     <div>
@@ -719,16 +719,16 @@ function updateMulti(){
     document.getElementById('multi-bar').style.width='0%';
     drawMultiChart([]);return;
   }
-  let total=0,nEff=0;
+  let total=0,nEff=0,wEff=0;
   const rows=dims.map((d,i)=>{
     const Di=Math.round(10*(0.7*d.e+0.3*d.wd))/10;
     const contrib=Math.round(1000*d.confidence*d.weight*Di)/1000;
-    total+=contrib;nEff+=d.confidence;
+    total+=contrib;nEff+=d.confidence;wEff+=d.confidence*d.weight;
     const el=document.getElementById('dim-score-'+d.id);
     if(el)el.textContent=`D${i+1}=${Di} → +${contrib}`;
     return{name:d.name,Di,contrib,confidence:d.confidence,weight:d.weight};
   });
-  const score=Math.round(100*total)/100;
+  const score=wEff>0?Math.round(100*total/wEff)/100:0;
   document.getElementById('multi-score').textContent=score;
   document.getElementById('multi-score').style.color=scoreColor(score);
   document.getElementById('multi-n-display').textContent=`n ≈ ${Math.round(100*nEff)/100} effective planes`;
